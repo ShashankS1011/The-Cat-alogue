@@ -22,7 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.thecat_alogue.databinding.ActivityMainBinding;
+import com.example.thecat_alogue.databinding.BottomSheetBreedInfoBinding;
 import com.example.thecat_alogue.databinding.DialogCatPreviewBinding;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private CatViewModel viewModel;
     private CatAdapter adapter;
+    private Breed selectedBreed = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.btnRetry.setOnClickListener(v -> {
             binding.emptyStateContainer.setVisibility(View.GONE);
             viewModel.loadCats(false);
+        });
+
+        // Breed Info Button Listener
+        binding.btnBreedInfo.setOnClickListener(v -> {
+            if (selectedBreed != null) {
+                showBreedBottomSheet(selectedBreed);
+            } else {
+                Toast.makeText(this, "Select a breed first!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // --- Credits Click Listener ---
@@ -170,9 +182,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.breedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Breed selected = (Breed) parent.getItemAtPosition(position);
-                if (binding.searchContainer.getVisibility() == View.VISIBLE && selected != null) {
-                    viewModel.setCurrentBreedId(selected.getId());
+                selectedBreed = (Breed) parent.getItemAtPosition(position);
+                if (binding.searchContainer.getVisibility() == View.VISIBLE && selectedBreed != null) {
+                    viewModel.setCurrentBreedId(selectedBreed.getId());
                     viewModel.loadCats(false);
                 }
             }
@@ -190,6 +202,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(greeting);
         }
+    }
+
+    private void showBreedBottomSheet(Breed breed) {
+        BottomSheetBreedInfoBinding sheetBinding = BottomSheetBreedInfoBinding.inflate(LayoutInflater.from(this));
+        sheetBinding.txtBreedName.setText(breed.getName());
+        sheetBinding.txtBreedOrigin.setText(getString(R.string.breed_origin,
+                breed.getOrigin() != null ? breed.getOrigin() : "Unknown",
+                breed.getLifeSpan() != null ? breed.getLifeSpan() : "12 - 15"));
+        sheetBinding.txtBreedTemperament.setText(breed.getTemperament() != null ? breed.getTemperament() : "");
+        sheetBinding.txtBreedDescription.setText(breed.getDescription() != null ? breed.getDescription() : "");
+
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(sheetBinding.getRoot());
+
+        if (breed.getWikipediaUrl() != null && !breed.getWikipediaUrl().isEmpty()) {
+            sheetBinding.btnWiki.setVisibility(View.VISIBLE);
+            sheetBinding.btnWiki.setOnClickListener(v -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(breed.getWikipediaUrl()));
+                startActivity(browserIntent);
+            });
+        } else {
+            sheetBinding.btnWiki.setVisibility(View.GONE);
+        }
+
+        dialog.show();
     }
 
     private void showCatPreviewDialog(CatImage cat) {

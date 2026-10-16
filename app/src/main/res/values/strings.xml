@@ -30,4 +30,6 @@
     <string name="empty_state_subtitle">We couldn\'t fetch any cats right now. Check your internet connection or try another selection.</string>
     <string name="retry">Retry</string>
     <string name="cat_detail_title">Cat Details</string>
+    <string name="btn_wiki">Learn More on Wikipedia</string>
+    <string name="breed_origin">Origin: %1$s | Life Span: %2$s yrs</string>
 </resources>
