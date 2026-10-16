@@ -31,11 +31,13 @@ Want to try the app on your phone? Download the latest pre-built APK directly fr
 
 - **Infinite Scroll Feed**: Infinite pagination feed powered by [The Cat API](https://thecatapi.com/). Never run out of cats!
 - **Breed Search**: Filter images by specific cat breeds (Bengal, Siamese, Persian, Maine Coon, and more) using a dynamic search dropdown.
+- **Interactive Image Preview**: Tap any cat card in the grid to launch an enlarged preview dialog with quick-action Share and Favorite options.
 - **Favorites**: Mark your favorite cats with one tap and retrieve them anytime in the "My Favourites" screen.
 - **Native Sharing**: Easily share cat image links directly to WhatsApp, Telegram, Twitter, or Instagram.
+- **Graceful Empty & Error States**: Friendly empty state screens with a one-tap Retry button when offline or when no results are found.
 - **Modern Material 3 UI**: Beautiful, warm cat-inspired palette (Deep Indigo, Terracotta, Soft Surface) with full **Dark Mode** support.
 - **Android 12+ Splash Screen**: Smooth application launch experience powered by `androidx.core:core-splashscreen`.
-- **Funny "About Developer" Modal**: Interactive dialog revealing the caffeine-fueled developer story and coffee mug safety warnings!
+- **Funny "About Developer" Modal**: Interactive dialog revealing the caffeine-fueled developer story, coffee mug safety warnings, and GitHub repository link.
 
 ---
 
@@ -45,17 +47,17 @@ Want to try the app on your phone? Download the latest pre-built APK directly fr
 
 ```
 com.example.thecat_alogue
-├── MainActivity.java      # UI Host, Drawer Navigation, LiveData Observer
-├── CatViewModel.java      # MVVM ViewModel retaining state across rotation
-├── CatRepository.java     # Single source of truth for network API calls
-├── Resource.java          # State wrapper (LOADING, SUCCESS, ERROR)
-├── CatAdapter.java         # ListAdapter with DiffUtil for smooth animations
-├── CatApiService.java     # Retrofit REST API Interface
-└── models/                # Clean POJO data models
+├── MainActivity.java            # UI Host, Navigation Drawer, LiveData Observer
+├── CatViewModel.java            # MVVM ViewModel retaining state across rotation
+├── CatRepository.java           # Single source of truth for network API calls
+├── Resource.java                # Generic state wrapper (LOADING, SUCCESS, ERROR)
+├── CatAdapter.java               # ListAdapter with DiffUtil for smooth animations
+├── CatApiService.java           # Retrofit REST API Interface
+└── models/                      # Clean POJO data models
 ```
 
 ### Libraries & Tools
-- **Architecture**: MVVM + Repository Pattern
+- **Architecture**: Clean Architecture + MVVM + Repository Pattern
 - **UI & Views**: Android ViewBinding, Material Components 3 (`Theme.Material3.DayNight.NoActionBar`), Navigation Drawer, SwipeRefreshLayout, RecyclerView (`ListAdapter` + `DiffUtil`)
 - **Networking**: [Retrofit 2](https://square.github.io/retrofit/) + Gson Converter
 - **Image Loading**: [Glide 4](https://github.com/bumptech/glide) with crossfade transitions and progress indicators
@@ -72,6 +74,7 @@ This repository enforces strict security practices:
 - **HTTPS Enforcement**: `android:usesCleartextTraffic="false"` explicitly configured in [AndroidManifest.xml](app/src/main/AndroidManifest.xml).
 - **Security Policy**: See [SECURITY.md](SECURITY.md) for vulnerability reporting guidelines and private vulnerability reporting details.
 - **Dependabot**: Automated dependency and GitHub Actions updates configured in [.github/dependabot.yml](.github/dependabot.yml).
+- **Branch Protection**: `main` branch protected on GitHub with enforced status checks.
 
 ---
 

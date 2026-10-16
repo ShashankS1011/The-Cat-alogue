@@ -29,7 +29,12 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
         void onFavouriteClick(CatImage cat);
     }
 
+    public interface OnCatClickListener {
+        void onCatClick(CatImage cat);
+    }
+
     private final OnFavouriteClickListener favouriteClickListener;
+    private final OnCatClickListener catClickListener;
 
     public static final DiffUtil.ItemCallback<CatImage> DIFF_CALLBACK = new DiffUtil.ItemCallback<CatImage>() {
         @Override
@@ -43,9 +48,10 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
         }
     };
 
-    public CatAdapter(OnFavouriteClickListener favouriteClickListener) {
+    public CatAdapter(OnFavouriteClickListener favouriteClickListener, OnCatClickListener catClickListener) {
         super(DIFF_CALLBACK);
         this.favouriteClickListener = favouriteClickListener;
+        this.catClickListener = catClickListener;
     }
 
     @NonNull
@@ -81,6 +87,12 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
                     }
                 })
                 .into(holder.binding.catImage);
+
+        holder.binding.catImage.setOnClickListener(v -> {
+            if (catClickListener != null) {
+                catClickListener.onCatClick(cat);
+            }
+        });
 
         holder.binding.btnFavourite.setOnClickListener(v -> {
             if (favouriteClickListener != null) {

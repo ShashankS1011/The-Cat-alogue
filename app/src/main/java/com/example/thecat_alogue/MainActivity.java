@@ -3,6 +3,7 @@ package com.example.thecat_alogue;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +20,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.thecat_alogue.databinding.ActivityMainBinding;
+import com.example.thecat_alogue.databinding.DialogCatPreviewBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
@@ -55,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // --- RecyclerView & Adapter ---
-        adapter = new CatAdapter(cat -> viewModel.addFavourite(cat.getId()));
+        adapter = new CatAdapter(
+                cat -> viewModel.addFavourite(cat.getId()),
+                this::showCatPreviewDialog
+        );
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         binding.recyclerView.setAdapter(adapter);
 
@@ -72,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Pull to Refresh Listener
         binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.loadCats(false));
+
+        // Retry Button Listener
+        binding.btnRetry.setOnClickListener(v -> {
+            binding.emptyStateContainer.setVisibility(View.GONE);
+            viewModel.loadCats(false);
+        });
 
         // --- Credits Click Listener ---
         binding.txtCredits.setOnClickListener(v -> showAboutDialog());
@@ -110,8 +122,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             if (resource.isSuccess() && resource.getData() != null) {
-                adapter.submitList(new ArrayList<>(resource.getData()));
+                List<CatImage> catList = resource.getData();
+                if (catList.isEmpty()) {
+                    binding.emptyStateContainer.setVisibility(View.VISIBLE);
+                    binding.recyclerView.setVisibility(View.GONE);
+                } else {
+                    binding.emptyStateContainer.setVisibility(View.GONE);
+                    binding.recyclerView.setVisibility(View.VISIBLE);
+                    adapter.submitList(new ArrayList<>(catList));
+                }
             } else if (resource.isError()) {
+                if (adapter.getItemCount() == 0) {
+                    binding.emptyStateContainer.setVisibility(View.VISIBLE);
+                    binding.recyclerView.setVisibility(View.GONE);
+                }
                 Toast.makeText(this, resource.getMessage() != null ? resource.getMessage() : getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             }
         });
@@ -161,6 +185,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(greeting);
         }
+    }
+
+    private void showCatPreviewDialog(CatImage cat) {
+        DialogCatPreviewBinding dialogBinding = DialogCatPreviewBinding.inflate(LayoutInflater.from(this));
+
+        Glide.with(this)
+                .load(cat.getUrl())
+                .into(dialogBinding.previewCatImage);
+
+        androidx.appcompat.app.AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.cat_detail_title)
+                .setView(dialogBinding.getRoot())
+                .setNegativeButton(R.string.close, (d, which) -> d.dismiss())
+                .create();
+
+        dialogBinding.btnPreviewShare.setOnClickListener(v -> {
+            String message = getString(R.string.share_cat_message, cat.getUrl());
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
+        });
+
+        dialogBinding.btnPreviewFavorite.setOnClickListener(v -> {
+            viewModel.addFavourite(cat.getId());
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 
     private void showAboutDialog() {

@@ -23,4 +23,8 @@
     <string name="about_dialog_funny" formatted="false">Hi there, I\'m Shashank (aka TheSusHero)!\n\nI built The Cat-alogue because my cats threatened to knock my coffee mug off the desk if I didn\'t build them an app to showcase their magnificence.\n\nCode powered by 90% caffeine and 10% purrs!</string>
     <string name="about_github_button">Visit GitHub Repo</string>
     <string name="close">Close</string>
+    <string name="empty_state_title">No Cats Found</string>
+    <string name="empty_state_subtitle">We couldn\'t fetch any cats right now. Check your internet connection or try another selection.</string>
+    <string name="retry">Retry</string>
+    <string name="cat_detail_title">Cat Details</string>
 </resources>
