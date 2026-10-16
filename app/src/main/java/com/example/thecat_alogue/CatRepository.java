@@ -94,6 +94,24 @@ public class CatRepository {
         });
     }
 
+    public void getRandomCatFact(RepositoryCallback<String> callback) {
+        apiService.getRandomCatFact().enqueue(new Callback<CatFact>() {
+            @Override
+            public void onResponse(@NonNull Call<CatFact> call, @NonNull Response<CatFact> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getFact() != null) {
+                    callback.onSuccess(response.body().getFact());
+                } else {
+                    callback.onError("Cats spend 70% of their lives sleeping!");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CatFact> call, @NonNull Throwable t) {
+                callback.onSuccess("Cats have 32 muscles in each ear!");
+            }
+        });
+    }
+
     public void getFavourites(String userId, RepositoryCallback<List<CatImage>> callback) {
         apiService.getFavourites(getApiKey(), userId).enqueue(new Callback<List<FavouriteResponse>>() {
             @Override
@@ -148,13 +166,13 @@ public class CatRepository {
                 if (response.isSuccessful()) {
                     callback.onSuccess(true);
                 } else {
-                    callback.onSuccess(true); // Saved locally
+                    callback.onSuccess(true);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<FavouriteResponse> call, @NonNull Throwable t) {
-                callback.onSuccess(true); // Saved locally in Room
+                callback.onSuccess(true);
             }
         });
     }

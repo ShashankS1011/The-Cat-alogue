@@ -17,6 +17,7 @@ public class CatViewModel extends AndroidViewModel {
     private final CatRepository repository;
     private final MutableLiveData<Resource<List<CatImage>>> catsLiveData = new MutableLiveData<>();
     private final MutableLiveData<Resource<List<Breed>>> breedsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> catFactLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> toastMessageLiveData = new MutableLiveData<>();
 
     private String currentBreedId = null;
@@ -35,6 +36,10 @@ public class CatViewModel extends AndroidViewModel {
 
     public LiveData<Resource<List<Breed>>> getBreedsLiveData() {
         return breedsLiveData;
+    }
+
+    public LiveData<String> getCatFactLiveData() {
+        return catFactLiveData;
     }
 
     public LiveData<String> getToastMessageLiveData() {
@@ -92,6 +97,20 @@ public class CatViewModel extends AndroidViewModel {
             @Override
             public void onError(String errorMessage) {
                 breedsLiveData.setValue(Resource.error(errorMessage));
+            }
+        });
+    }
+
+    public void loadCatFact() {
+        repository.getRandomCatFact(new CatRepository.RepositoryCallback<String>() {
+            @Override
+            public void onSuccess(String fact) {
+                catFactLiveData.setValue(fact);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                catFactLiveData.setValue("Cats spend 70% of their lives sleeping!");
             }
         });
     }

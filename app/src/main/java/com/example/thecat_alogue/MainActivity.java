@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             viewModel.loadCats(false);
         });
 
+        // Cat Fact Refresh Button
+        binding.btnRefreshFact.setOnClickListener(v -> viewModel.loadCatFact());
+
         // Breed Info Button Listener
         binding.btnBreedInfo.setOnClickListener(v -> {
             if (selectedBreed != null) {
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             viewModel.loadBreeds();
             viewModel.loadCats(false);
+            viewModel.loadCatFact();
         }
     }
 
@@ -156,6 +160,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewModel.getBreedsLiveData().observe(this, resource -> {
             if (resource != null && resource.isSuccess() && resource.getData() != null) {
                 setupBreedSpinner(resource.getData());
+            }
+        });
+
+        viewModel.getCatFactLiveData().observe(this, fact -> {
+            if (fact != null && !fact.isEmpty()) {
+                binding.txtCatFact.setText(fact);
             }
         });
 

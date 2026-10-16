@@ -30,39 +30,42 @@ Want to try the app on your phone? Download the latest pre-built APK directly fr
 ## Key Features
 
 - **Infinite Scroll Feed**: Infinite pagination feed powered by [The Cat API](https://thecatapi.com/). Never run out of cats!
-- **Breed Search**: Filter images by specific cat breeds (Bengal, Siamese, Persian, Maine Coon, and more) using a dynamic search dropdown.
+- **Cat Fact of the Day**: Live daily cat facts and trivia card powered by [Cat Facts API](https://catfact.ninja/). Tap refresh for instant fun facts!
+- **Breed Search & Details**: Filter images by specific cat breeds (Bengal, Siamese, Persian, Maine Coon, and more) using a dynamic search dropdown and view full breed details in a Material BottomSheet.
 - **Interactive Image Preview**: Tap any cat card in the grid to launch an enlarged preview dialog with quick-action Share and Favorite options.
+- **Offline Storage**: Save your favorite cats locally with Room Database (`androidx.room`) and view them anytime, even offline!
+- **Secure File Sharing**: Share image links or content URIs securely using Android `FileProvider`.
 - **Dedicated Loading Screen**: Centered loading layout ("Fetching feline goodness...") when fetching initial data or switching views.
-- **Favorites**: Mark your favorite cats with one tap and retrieve them anytime in the "My Favourites" screen.
-- **Native Sharing**: Easily share cat image links directly to WhatsApp, Telegram, Twitter, or Instagram.
-- **Graceful Empty & Error States**: Friendly empty state screens with a one-tap Retry button when offline or when no results are found.
-- **Full Material 3 Day & Night Themes**: High-contrast, beautiful Material 3 color roles designed for both Light and Dark mode.
-- **Android 12+ Splash Screen**: Smooth application launch experience powered by `androidx.core:core-splashscreen`.
+- **Golden Dark & M3 Themes**: High-contrast, beautiful Material 3 color roles designed for Dark and Light modes.
+- **Android 12+ Splash Screen**: 3-second animated application launch experience powered by `androidx.core:core-splashscreen`.
 - **Funny "About Developer" Modal**: Interactive dialog revealing the developer's story (huge fan of both cats & dogs!), pet meme trivia, and GitHub repository link.
 
 ---
 
 ## Architecture & Tech Stack
 
-**The Cat-alogue** is built adhering to strict modern Android production standards using pure **Java and XML**:
+**The Cat-alogue** is built adhering to strict modern Android production standards using pure **Java, Kotlin, and XML**:
 
 ```
 com.example.thecat_alogue
 ├── MainActivity.java            # UI Host, Navigation Drawer, LiveData Observer
 ├── CatViewModel.java            # MVVM ViewModel retaining state across rotation
-├── CatRepository.java           # Single source of truth for network API calls
+├── CatRepository.java           # Single source of truth for network API & Room DB
+├── AppDatabase.java             # Room SQLite Database Instance
+├── FavoriteCatDao.java          # Room Data Access Object
 ├── Resource.java                # Generic state wrapper (LOADING, SUCCESS, ERROR)
 ├── CatAdapter.java               # ListAdapter with DiffUtil for smooth animations
 ├── CatApiService.java           # Retrofit REST API Interface
+├── CatUtils.kt                  # Kotlin Helper object for Java-Kotlin interop
 └── models/                      # Clean POJO data models
 ```
 
 ### Libraries & Tools
-- **Architecture**: Clean Architecture + MVVM + Repository Pattern
-- **UI & Views**: Android ViewBinding, Material Components 3 (`Theme.Material3.DayNight.NoActionBar`), Navigation Drawer, SwipeRefreshLayout, RecyclerView (`ListAdapter` + `DiffUtil`)
-- **Networking**: [Retrofit 2](https://square.github.io/retrofit/) + Gson Converter
+- **Architecture**: Clean Architecture + MVVM + Repository Pattern + Room Database
+- **UI & Views**: Android ViewBinding, Material Components 3, Navigation Drawer, BottomSheetDialog, SwipeRefreshLayout, RecyclerView (`ListAdapter` + `DiffUtil`)
+- **Networking**: [Retrofit 2](https://square.github.io/retrofit/) + Gson Converter + Cat Facts API
 - **Image Loading**: [Glide 4](https://github.com/bumptech/glide) with crossfade transitions and progress indicators
-- **Async & Lifecycle**: `androidx.lifecycle` (`ViewModel` + `LiveData`), `OnBackPressedDispatcher`
+- **Async & Lifecycle**: `androidx.lifecycle` (`ViewModel` + `LiveData`), `OnBackPressedDispatcher`, Executors
 - **Testing**: JUnit4 & Mockito unit test suite
 - **CI/CD**: GitHub Actions pipeline for building, linting, unit testing, and automated release generation
 
@@ -73,6 +76,7 @@ com.example.thecat_alogue
 This repository enforces strict security practices:
 - **API Key Masking**: No hardcoded secrets in source code. Secrets are managed via `local.properties` and injected dynamically into `BuildConfig.CAT_API_KEY`.
 - **HTTPS Enforcement**: `android:usesCleartextTraffic="false"` explicitly configured in [AndroidManifest.xml](app/src/main/AndroidManifest.xml).
+- **FileProvider Security**: Secure content URI generation for file sharing via `FileProvider`.
 - **Security Policy**: See [SECURITY.md](SECURITY.md) for vulnerability reporting guidelines and private vulnerability reporting details.
 - **Dependabot**: Automated dependency and GitHub Actions updates configured in [.github/dependabot.yml](.github/dependabot.yml).
 - **Branch Protection**: `main` branch protected on GitHub with enforced status checks.

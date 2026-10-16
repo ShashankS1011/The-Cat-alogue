@@ -33,4 +33,6 @@
     <string name="btn_wiki">Learn More on Wikipedia</string>
     <string name="breed_origin">Origin: %1$s | Life Span: %2$s yrs</string>
     <string name="splash_subtitle">Your Ultimate Feline Haven</string>
+    <string name="cat_fact_title">Cat Fact of the Day</string>
+    <string name="cat_fact_loading">Fetching a fun cat fact&#8230;</string>
 </resources>
