@@ -47,7 +47,7 @@ jobs:
           cp app/build/outputs/apk/release/app-release-unsigned.apk output_apks/TheCat-alogue-v1.0.0-release-unsigned.apk || true
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: TheCat-alogue-APKs
           path: output_apks/*
