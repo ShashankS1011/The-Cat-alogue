@@ -29,7 +29,7 @@ jobs:
       - name: Configure local.properties
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "THE_CAT_API_KEY=\"live_pAAbxB0S79QEhi9f122NsmHhuo7PgncwMptCEPDi9yTdubmufGFTitiXsKlrQbik\"" >> local.properties
+          echo "THE_CAT_API_KEY=live_pAAbxB0S79QEhi9f122NsmHhuo7PgncwMptCEPDi9yTdubmufGFTitiXsKlrQbik" >> local.properties
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest

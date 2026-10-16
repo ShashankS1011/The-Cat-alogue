@@ -20,7 +20,7 @@
     <string name="hello_night_owl">Hello Night Owl!</string>
     <string name="credits_text">Made by TheSusHero</string>
     <string name="about_dialog_title">About The Developer</string>
-    <string name="about_dialog_funny">Hi there, I\'m Shashank (aka TheSusHero)!\n\nI built The Cat-alogue because my cats threatened to knock my coffee mug off the desk if I didn\'t build them an app to showcase their magnificence.\n\nCode powered by 90% caffeine and 10% purrs!</string>
+    <string name="about_dialog_funny" formatted="false">Hi there, I\'m Shashank (aka TheSusHero)!\n\nI built The Cat-alogue because my cats threatened to knock my coffee mug off the desk if I didn\'t build them an app to showcase their magnificence.\n\nCode powered by 90% caffeine and 10% purrs!</string>
     <string name="about_github_button">Visit GitHub Repo</string>
     <string name="close">Close</string>
 </resources>
