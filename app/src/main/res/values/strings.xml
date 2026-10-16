@@ -32,4 +32,5 @@
     <string name="cat_detail_title">Cat Details</string>
     <string name="btn_wiki">Learn More on Wikipedia</string>
     <string name="breed_origin">Origin: %1$s | Life Span: %2$s yrs</string>
+    <string name="splash_subtitle">Your Ultimate Feline Haven</string>
 </resources>

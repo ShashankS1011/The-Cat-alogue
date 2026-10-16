@@ -11,13 +11,21 @@
         android:orientation="vertical"
         android:background="?android:attr/colorBackground">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="@string/app_name" />
+            android:layout_height="wrap_content"
+            android:background="@color/dark_surface">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/dark_surface"
+                app:titleTextColor="@color/primary_gold"
+                app:subtitleTextColor="@color/on_dark_surface_secondary"
+                app:title="@string/app_name" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
             android:id="@+id/searchContainer"
@@ -26,14 +34,14 @@
             android:visibility="gone"
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="?attr/colorSurface">
+            android:background="@color/dark_surface_variant">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/select_breed"
                 android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="@color/primary_gold"
                 android:paddingBottom="8dp"/>
 
             <LinearLayout
@@ -57,7 +65,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/nav_search_breeds"
                     android:src="@drawable/ic_nav_about"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="@color/primary_gold" />
 
             </LinearLayout>
 
@@ -76,7 +84,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:padding="4dp" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -88,7 +98,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="32dp"
-                android:background="?android:attr/colorBackground"
+                android:background="@color/dark_background"
                 android:visibility="gone">
 
                 <ProgressBar
@@ -96,7 +106,7 @@
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:indeterminateTint="?attr/colorPrimary" />
+                    android:indeterminateTint="@color/primary_gold" />
 
                 <TextView
                     android:id="@+id/loadingText"
@@ -105,7 +115,7 @@
                     android:paddingTop="16dp"
                     android:text="@string/loading_feline_goodness"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="@color/on_dark_surface" />
 
             </LinearLayout>
 
@@ -125,7 +135,7 @@
                     android:layout_height="96dp"
                     android:contentDescription="@string/empty_state_title"
                     android:src="@drawable/ic_refresh"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="@color/primary_gold" />
 
                 <TextView
                     android:id="@+id/emptyStateTitle"
@@ -134,7 +144,7 @@
                     android:paddingTop="16dp"
                     android:text="@string/empty_state_title"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="?attr/colorOnSurface"
+                    android:textColor="@color/on_dark_surface"
                     android:textStyle="bold" />
 
                 <TextView
@@ -145,31 +155,20 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="16dp"
                     android:text="@string/empty_state_subtitle"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="@color/on_dark_surface_secondary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRetry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primary_gold"
+                    android:textColor="@color/on_primary_gold"
                     android:text="@string/retry" />
 
             </LinearLayout>
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/txtCredits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/credits_text"
-            android:gravity="center"
-            android:padding="16dp"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            android:textColor="?android:attr/textColorSecondary" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -177,9 +176,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?attr/colorSurface"
-        app:itemTextColor="?android:attr/textColorPrimary"
-        app:itemIconTint="?attr/colorPrimary"
+        android:background="@color/dark_surface"
+        app:itemTextColor="@color/on_dark_surface"
+        app:itemIconTint="@color/primary_gold"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
 

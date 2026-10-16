@@ -96,9 +96,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        // --- Credits Click Listener ---
-        binding.txtCredits.setOnClickListener(v -> showAboutDialog());
-
         // --- Back Button Handler ---
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -197,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String greeting = getString(CatUtils.getTimeGreeting());
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(greeting);
+            getSupportActionBar().setSubtitle("Your Feline Haven");
         }
     }
 

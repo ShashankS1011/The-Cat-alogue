@@ -95,6 +95,14 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
         });
 
         holder.binding.btnFavourite.setOnClickListener(v -> {
+            holder.binding.btnFavourite.setImageResource(R.drawable.ic_favourite_filled);
+            holder.binding.btnFavourite.animate()
+                    .scaleX(1.3f)
+                    .scaleY(1.3f)
+                    .setDuration(150)
+                    .withEndAction(() -> holder.binding.btnFavourite.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start())
+                    .start();
+
             if (favouriteClickListener != null) {
                 favouriteClickListener.onFavouriteClick(cat);
             }
