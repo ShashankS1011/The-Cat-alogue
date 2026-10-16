@@ -1,0 +1,76 @@
+name: Build & Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Configure local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "THE_CAT_API_KEY=\"live_pAAbxB0S79QEhi9f122NsmHhuo7PgncwMptCEPDi9yTdubmufGFTitiXsKlrQbik\"" >> local.properties
+
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Copy APKs for Upload
+        run: |
+          mkdir -p output_apks
+          cp app/build/outputs/apk/debug/app-debug.apk output_apks/TheCat-alogue-v1.0.0-debug.apk || true
+          cp app/build/outputs/apk/release/app-release-unsigned.apk output_apks/TheCat-alogue-v1.0.0-release-unsigned.apk || true
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheCat-alogue-APKs
+          path: output_apks/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: "The Cat-alogue ${{ github.ref_name }}"
+          body: |
+            ## 🐾 The Cat-alogue Release ${{ github.ref_name }}
+            
+            ### What's New:
+            - **Modern Material 3 Theme**: Warm cat-inspired palette with Dark & Light mode support.
+            - **Android 12+ Splash Screen API**: Smooth application startup experience.
+            - **MVVM Architecture & ViewBinding**: Enhanced stability and performance.
+            - **Infinite Scrolling & Breed Search**: Explore random cats or filter by breed.
+            - **Favorites & Sharing**: Save favorite cats and share image URLs with friends.
+            - **Funny About Developer Dialog**: Learn about the caffeine-fueled developer behind the app.
+            
+            ---
+            ### 📥 Downloads
+            Download the `.apk` file below and install it directly on your Android device (Android 7.0+ / API 24+).
+          draft: false
+          prerelease: false
+          files: output_apks/*
