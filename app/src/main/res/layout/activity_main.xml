@@ -32,7 +32,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/select_breed"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                android:textColor="?attr/colorOnSurface"
                 android:paddingBottom="8dp"/>
 
             <Spinner
@@ -60,6 +61,36 @@
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+            <!-- Loading Screen Overlay -->
+            <LinearLayout
+                android:id="@+id/loadingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:background="?android:attr/colorBackground"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:id="@+id/loadingProgressBar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:indeterminateTint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/loadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:text="@string/loading_feline_goodness"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+            </LinearLayout>
+
+            <!-- Empty State Container -->
             <LinearLayout
                 android:id="@+id/emptyStateContainer"
                 android:layout_width="match_parent"
@@ -74,7 +105,7 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:contentDescription="@string/empty_state_title"
-                    android:src="@android:drawable/ic_dialog_info"
+                    android:src="@drawable/ic_refresh"
                     app:tint="?attr/colorPrimary" />
 
                 <TextView
@@ -83,7 +114,8 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp"
                     android:text="@string/empty_state_title"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold" />
 
                 <TextView

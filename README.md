@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <b>A modern, production-grade Android application for feline enthusiasts.</b><br>
+  <b>A modern, production-grade Android application for feline and pet enthusiasts.</b><br>
   Explore endless streams of cats, search by breed, save favorites, and share the joy!
 </p>
 
@@ -32,12 +32,13 @@ Want to try the app on your phone? Download the latest pre-built APK directly fr
 - **Infinite Scroll Feed**: Infinite pagination feed powered by [The Cat API](https://thecatapi.com/). Never run out of cats!
 - **Breed Search**: Filter images by specific cat breeds (Bengal, Siamese, Persian, Maine Coon, and more) using a dynamic search dropdown.
 - **Interactive Image Preview**: Tap any cat card in the grid to launch an enlarged preview dialog with quick-action Share and Favorite options.
+- **Dedicated Loading Screen**: Centered loading layout ("Fetching feline goodness...") when fetching initial data or switching views.
 - **Favorites**: Mark your favorite cats with one tap and retrieve them anytime in the "My Favourites" screen.
 - **Native Sharing**: Easily share cat image links directly to WhatsApp, Telegram, Twitter, or Instagram.
 - **Graceful Empty & Error States**: Friendly empty state screens with a one-tap Retry button when offline or when no results are found.
-- **Modern Material 3 UI**: Beautiful, warm cat-inspired palette (Deep Indigo, Terracotta, Soft Surface) with full **Dark Mode** support.
+- **Full Material 3 Day & Night Themes**: High-contrast, beautiful Material 3 color roles designed for both Light and Dark mode.
 - **Android 12+ Splash Screen**: Smooth application launch experience powered by `androidx.core:core-splashscreen`.
-- **Funny "About Developer" Modal**: Interactive dialog revealing the caffeine-fueled developer story, coffee mug safety warnings, and GitHub repository link.
+- **Funny "About Developer" Modal**: Interactive dialog revealing the developer's story (huge fan of both cats & dogs!), pet meme trivia, and GitHub repository link.
 
 ---
 
@@ -80,7 +81,7 @@ This repository enforces strict security practices:
 
 ## About The Developer
 
-> *"I built The Cat-alogue because my cats threatened to knock my coffee mug off the desk if I didn't build them an app to showcase their magnificence. Code powered by 90% caffeine and 10% purrs!"*
+> *"Fun fact: I don't actually own any cats (yet!), but I'm an absolute fan of both cats and dogs! I built The Cat-alogue to share the joy of feline friends with everyone. Code powered by 90% caffeine, 10% pet memes, and 0% scratches!"*
 > 
 > — **Shashank** ([@ShashankS1011](https://github.com/ShashankS1011))
 

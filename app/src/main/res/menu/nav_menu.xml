@@ -4,18 +4,18 @@
         <item
             android:id="@+id/nav_home"
             android:title="@string/nav_random_cats"
-            android:icon="@android:drawable/ic_menu_rotate" />
+            android:icon="@drawable/ic_nav_home" />
         <item
             android:id="@+id/nav_search"
             android:title="@string/nav_search_breeds"
-            android:icon="@android:drawable/ic_menu_search" />
+            android:icon="@drawable/ic_nav_search" />
         <item
             android:id="@+id/nav_favourites"
             android:title="@string/nav_my_favourites"
-            android:icon="@android:drawable/btn_star_big_on" />
+            android:icon="@drawable/ic_nav_favourites" />
         <item
             android:id="@+id/nav_about"
             android:title="@string/nav_about_dev"
-            android:icon="@android:drawable/ic_menu_info_details" />
+            android:icon="@drawable/ic_nav_about" />
     </group>
 </menu>

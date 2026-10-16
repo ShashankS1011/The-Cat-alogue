@@ -116,8 +116,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resource == null) return;
 
             if (resource.isLoading()) {
+                if (adapter.getItemCount() == 0) {
+                    binding.loadingContainer.setVisibility(View.VISIBLE);
+                }
                 binding.swipeRefreshLayout.setRefreshing(true);
             } else {
+                binding.loadingContainer.setVisibility(View.GONE);
                 binding.swipeRefreshLayout.setRefreshing(false);
             }
 
@@ -132,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     adapter.submitList(new ArrayList<>(catList));
                 }
             } else if (resource.isError()) {
+                binding.loadingContainer.setVisibility(View.GONE);
                 if (adapter.getItemCount() == 0) {
                     binding.emptyStateContainer.setVisibility(View.VISIBLE);
                     binding.recyclerView.setVisibility(View.GONE);
