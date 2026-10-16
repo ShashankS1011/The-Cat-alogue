@@ -1,19 +1,17 @@
 package com.example.thecat_alogue;
 
+import com.google.gson.annotations.SerializedName;
+
 public class FavouriteRequest {
-    private final String image_id;
-    private final String sub_id; // This is your user ID (e.g., "user_123")
 
-    public FavouriteRequest(String image_id, String sub_id) {
-        this.image_id = image_id;
-        this.sub_id = sub_id;
-    }
+    @SerializedName("image_id") // Ensures JSON key is always "image_id"
+    private final String imageId;
 
-    public String getImageId() {
-        return image_id;
-    }
+    @SerializedName("sub_id")
+    private final String subId;
 
-    public String getSubId() {
-        return sub_id;
+    public FavouriteRequest(String imageId, String subId) {
+        this.imageId = imageId;
+        this.subId = subId;
     }
 }

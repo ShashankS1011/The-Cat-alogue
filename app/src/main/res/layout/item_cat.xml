@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
     app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
@@ -21,6 +21,7 @@
                 android:id="@+id/catImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
                 android:src="@android:drawable/ic_menu_gallery" />
 
@@ -29,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/purple_500" />
+                android:indeterminateTint="@color/primary" />
         </FrameLayout>
 
         <LinearLayout
@@ -41,24 +42,24 @@
 
             <ImageButton
                 android:id="@+id/btnShare"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:src="@drawable/ic_share"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="Share"
-                app:tint="#2196F3" />
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/share_via"
+                app:tint="@color/share_blue" />
 
             <ImageButton
                 android:id="@+id/btnFavourite"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:src="@drawable/ic_favourite"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
-                android:contentDescription="Save to Favourites"
-                app:tint="#FF9800" />
+                android:contentDescription="@string/nav_my_favourites"
+                app:tint="@color/fav_red" />
 
         </LinearLayout>
 

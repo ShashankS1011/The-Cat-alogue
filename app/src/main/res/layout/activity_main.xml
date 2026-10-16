@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="The Cat-alogue" />
+            app:title="@string/app_name" />
 
         <LinearLayout
             android:id="@+id/searchContainer"
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select a Breed:"
+                android:text="@string/select_breed"
                 android:textStyle="bold"
                 android:paddingBottom="8dp"/>
 
@@ -60,7 +60,7 @@
             android:id="@+id/txtCredits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Made by TheSusHero"
+            android:text="@string/credits_text"
             android:gravity="center"
             android:padding="16dp"
             android:textSize="14sp"

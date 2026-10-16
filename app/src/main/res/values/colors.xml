@@ -2,5 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple_500">#6200EE</color>
+
+    <!-- Warm Cat Theme Palette (Material 3) -->
+    <color name="primary">#6750A4</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#EADDFF</color>
+    <color name="on_primary_container">#21005D</color>
+
+    <color name="secondary">#8F4C38</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#FFDAD2</color>
+
+    <color name="surface_light">#FFF8F6</color>
+    <color name="on_surface_light">#211A18</color>
+    <color name="surface_variant_light">#F4E0DB</color>
+
+    <color name="fav_red">#E53935</color>
+    <color name="share_blue">#1E88E5</color>
 </resources>

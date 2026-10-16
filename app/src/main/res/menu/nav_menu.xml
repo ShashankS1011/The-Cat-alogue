@@ -3,15 +3,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:title="Random Cats"
+            android:title="@string/nav_random_cats"
             android:icon="@android:drawable/ic_menu_rotate" />
         <item
             android:id="@+id/nav_search"
-            android:title="Search Breeds"
+            android:title="@string/nav_search_breeds"
             android:icon="@android:drawable/ic_menu_search" />
         <item
             android:id="@+id/nav_favourites"
-            android:title="My Favourites"
+            android:title="@string/nav_my_favourites"
             android:icon="@android:drawable/btn_star_big_on" />
+        <item
+            android:id="@+id/nav_about"
+            android:title="@string/nav_about_dev"
+            android:icon="@android:drawable/ic_menu_info_details" />
     </group>
 </menu>

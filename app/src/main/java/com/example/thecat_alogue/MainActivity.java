@@ -7,274 +7,172 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.thecat_alogue.databinding.ActivityMainBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // TODO: Paste your real API Key here
-    private static final String API_KEY = "YOUR_API_KEY_HERE";
-
-    // UI Components
-    private DrawerLayout drawerLayout;
-    private RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private LinearLayout searchContainer;
-    private Spinner breedSpinner; // Replaces the old EditText
-    private TextView txtCredits;
-
-    // Logic & Data
+    private ActivityMainBinding binding;
+    private CatViewModel viewModel;
     private CatAdapter adapter;
-    private CatApiService apiService;
-    private String currentBreedId = null; // null = Random, "beng" = Bengal, etc.
-    private boolean isLoading = false;    // Prevents double-loading during scroll
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // --- 1. Setup Toolbar & Greeting ---
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        viewModel = new ViewModelProvider(this).get(CatViewModel.class);
+
+        // --- Toolbar & Greeting ---
+        setSupportActionBar(binding.toolbar);
         setupGreeting();
 
-        // --- 2. Setup Navigation Drawer ---
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+        // --- Navigation Drawer ---
+        binding.navView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
+        binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // --- 3. Setup UI Elements ---
-        searchContainer = findViewById(R.id.searchContainer);
-        breedSpinner = findViewById(R.id.breedSpinner);
-        txtCredits = findViewById(R.id.txtCredits);
+        // --- RecyclerView & Adapter ---
+        adapter = new CatAdapter(cat -> viewModel.addFavourite(cat.getId()));
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        binding.recyclerView.setAdapter(adapter);
 
-        // --- 4. Setup RecyclerView & Infinite Scroll ---
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-
-        // INFINITE SCROLL LISTENER
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        // Infinite Scroll Listener
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                // If we can't scroll down anymore (direction 1), we are at the bottom
-                if (!recyclerView.canScrollVertically(1) && !isLoading) {
-                    loadCats(true); // Load MORE cats (append)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.loadCats(true);
                 }
             }
         });
 
-        // --- 5. Setup Pull-to-Refresh ---
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            loadCats(false); // Reload FRESH cats (replace)
-        });
+        // Pull to Refresh Listener
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> viewModel.loadCats(false));
 
-        // --- 6. Setup Retrofit ---
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.thecatapi.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        apiService = retrofit.create(CatApiService.class);
+        // --- Credits Click Listener ---
+        binding.txtCredits.setOnClickListener(v -> showAboutDialog());
 
-        // --- 7. Initial Data Load ---
-        setupBreedSpinner(); // Fetch the list of breeds for the dropdown
-        loadCats(false);     // Load initial random cats
-
-        // --- 8. Credits Link ---
-        txtCredits.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ShashankS1011"));
-            startActivity(browserIntent);
-        });
-
-        // --- 9. Back Button Handling ---
+        // --- Back Button Handler ---
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
                     setEnabled(false);
                     getOnBackPressedDispatcher().onBackPressed();
                 }
             }
         });
-    }
 
-    // ==========================================
-    // CORE LOGIC: Loading Cats
-    // ==========================================
+        // --- Observe ViewModel States ---
+        observeViewModel();
 
-    /**
-     * The Master Method to load cats.
-     * @param isPagination TRUE if we are scrolling down (append data). FALSE if we are refreshing/starting (replace data).
-     */
-    private void loadCats(boolean isPagination) {
-        if (isLoading) return; // Stop if already busy
-        isLoading = true;
-
-        if (!isPagination) {
-            swipeRefreshLayout.setRefreshing(true); // Show spinner only for refresh
-        } else {
-            Toast.makeText(this, "Loading more...", Toast.LENGTH_SHORT).show();
+        // --- Initial Load ---
+        if (savedInstanceState == null) {
+            viewModel.loadBreeds();
+            viewModel.loadCats(false);
         }
+    }
 
-        // Call API with the currentBreedId (if null, it gets random cats)
-        apiService.getCats(API_KEY, 50, currentBreedId).enqueue(new Callback<List<CatImage>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<CatImage>> call, @NonNull Response<List<CatImage>> response) {
-                isLoading = false;
-                swipeRefreshLayout.setRefreshing(false);
+    private void observeViewModel() {
+        viewModel.getCatsLiveData().observe(this, resource -> {
+            if (resource == null) return;
 
-                if (response.isSuccessful() && response.body() != null) {
-                    List<CatImage> newCats = response.body();
-
-                    if (!isPagination) {
-                        // REFRESH: Create new adapter
-                        adapter = new CatAdapter(newCats, apiService, API_KEY);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        // PAGINATION: Add to existing list
-                        if (adapter != null) {
-                            adapter.addData(newCats);
-                        }
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "No more cats found", Toast.LENGTH_SHORT).show();
-                }
+            if (resource.isLoading()) {
+                binding.swipeRefreshLayout.setRefreshing(true);
+            } else {
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
 
-            @Override
-            public void onFailure(@NonNull Call<List<CatImage>> call, @NonNull Throwable t) {
-                isLoading = false;
-                swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+            if (resource.isSuccess() && resource.getData() != null) {
+                adapter.submitList(new ArrayList<>(resource.getData()));
+            } else if (resource.isError()) {
+                Toast.makeText(this, resource.getMessage() != null ? resource.getMessage() : getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.getBreedsLiveData().observe(this, resource -> {
+            if (resource != null && resource.isSuccess() && resource.getData() != null) {
+                setupBreedSpinner(resource.getData());
+            }
+        });
+
+        viewModel.getToastMessageLiveData().observe(this, message -> {
+            if (message != null && !message.isEmpty()) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // ==========================================
-    // SPINNER LOGIC (Breed Dropdown)
-    // ==========================================
+    private void setupBreedSpinner(List<Breed> breeds) {
+        ArrayAdapter<Breed> spinnerAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                breeds
+        );
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.breedSpinner.setAdapter(spinnerAdapter);
 
-    private void setupBreedSpinner() {
-        // Fetch list of breeds
-        apiService.getBreeds(API_KEY).enqueue(new Callback<List<Breed>>() {
+        binding.breedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onResponse(Call<List<Breed>> call, Response<List<Breed>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Breed> breeds = response.body();
-
-                    // Create Adapter for Spinner
-                    ArrayAdapter<Breed> spinnerAdapter = new ArrayAdapter<>(
-                            MainActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            breeds
-                    );
-                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    breedSpinner.setAdapter(spinnerAdapter);
-
-                    // Handle Selection
-                    breedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            // 1. Get selected breed
-                            Breed selected = (Breed) parent.getItemAtPosition(position);
-
-                            // 2. Update global ID and reload
-                            // Only reload if we are actually in "Search Mode" (search container is visible)
-                            if (searchContainer.getVisibility() == View.VISIBLE) {
-                                currentBreedId = selected.getId();
-                                loadCats(false); // False = Clear list and start fresh
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {}
-                    });
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Breed selected = (Breed) parent.getItemAtPosition(position);
+                if (binding.searchContainer.getVisibility() == View.VISIBLE && selected != null) {
+                    viewModel.setCurrentBreedId(selected.getId());
+                    viewModel.loadCats(false);
                 }
             }
+
             @Override
-            public void onFailure(Call<List<Breed>> call, Throwable t) {
-                // Fail silently or log it
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
-
-    // ==========================================
-    // FAVOURITES LOGIC
-    // ==========================================
-
-    private void loadFavourites() {
-        Toast.makeText(this, "Loading favourites...", Toast.LENGTH_SHORT).show();
-        searchContainer.setVisibility(View.GONE);
-        swipeRefreshLayout.setRefreshing(true);
-
-        apiService.getFavourites(API_KEY, "user_123").enqueue(new Callback<List<FavouriteResponse>>() {
-            @Override
-            public void onResponse(Call<List<FavouriteResponse>> call, Response<List<FavouriteResponse>> response) {
-                swipeRefreshLayout.setRefreshing(false);
-                if (response.isSuccessful() && response.body() != null) {
-                    List<CatImage> myFavs = new ArrayList<>();
-                    for (FavouriteResponse item : response.body()) {
-                        if (item.getImage() != null) myFavs.add(item.getImage());
-                    }
-                    if (myFavs.isEmpty()) Toast.makeText(MainActivity.this, "No favourites yet!", Toast.LENGTH_SHORT).show();
-
-                    // Favourites don't support infinite scroll easily, so we just set the adapter
-                    adapter = new CatAdapter(myFavs, apiService, API_KEY);
-                    recyclerView.setAdapter(adapter);
-                }
-            }
-            @Override
-            public void onFailure(Call<List<FavouriteResponse>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(MainActivity.this, "Error loading favourites", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // ==========================================
-    // HELPER METHODS
-    // ==========================================
 
     private void setupGreeting() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        String greeting = (hour >= 5 && hour < 12) ? "Good Morning! ☀️" :
-                (hour >= 12 && hour < 17) ? "Good Afternoon! 🐱" :
-                        (hour >= 17 && hour < 21) ? "Good Evening! 🌙" : "Hello Night Owl! 🦉";
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle(greeting);
+        String greeting = (hour >= 5 && hour < 12) ? getString(R.string.good_morning) :
+                (hour >= 12 && hour < 17) ? getString(R.string.good_afternoon) :
+                        (hour >= 17 && hour < 21) ? getString(R.string.good_evening) : getString(R.string.hello_night_owl);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(greeting);
+        }
+    }
+
+    private void showAboutDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.about_dialog_title)
+                .setMessage(R.string.about_dialog_funny)
+                .setPositiveButton(R.string.about_github_button, (dialog, which) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ShashankS1011"));
+                    startActivity(browserIntent);
+                })
+                .setNegativeButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @Override
@@ -282,24 +180,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Mode: Random Cats
-            searchContainer.setVisibility(View.GONE);
-            currentBreedId = null; // Reset to random
-            loadCats(false);       // Load fresh random batch
-
+            binding.searchContainer.setVisibility(View.GONE);
+            viewModel.setCurrentBreedId(null);
+            viewModel.loadCats(false);
         } else if (id == R.id.nav_search) {
-            // Mode: Search Breeds
-            searchContainer.setVisibility(View.VISIBLE);
-            // We don't load immediately; we wait for the Spinner selection (or user interaction)
-            // But we can clear the list to look cleaner
-            if(adapter != null) adapter.updateData(new ArrayList<>());
-
+            binding.searchContainer.setVisibility(View.VISIBLE);
+            adapter.submitList(new ArrayList<>());
         } else if (id == R.id.nav_favourites) {
-            // Mode: Favourites
-            loadFavourites();
+            binding.searchContainer.setVisibility(View.GONE);
+            viewModel.loadFavourites();
+        } else if (id == R.id.nav_about) {
+            showAboutDialog();
         }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 }
