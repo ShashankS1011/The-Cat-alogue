@@ -1,13 +1,13 @@
-# Security Policy 🔒
+# Security Policy
 
 ## Supported Versions
 
 We actively maintain and provide security updates for the latest stable release of **The Cat-alogue**.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+| Version | Supported |
+| ------- | --------- |
+| 1.0.x   | Yes       |
+| < 1.0   | No        |
 
 ## Reporting a Vulnerability
 
@@ -28,4 +28,4 @@ We take the security of **The Cat-alogue** very seriously. If you believe you ha
 - **Resolution**: If validated, a security patch will be prepared, tested, and released promptly.
 - **Disclosure**: Once fixed, we will publish a security advisory giving full credit to the reporter (unless you prefer to remain anonymous).
 
-Thank you for helping keep **The Cat-alogue** safe! 🐱
+Thank you for helping keep **The Cat-alogue** safe!

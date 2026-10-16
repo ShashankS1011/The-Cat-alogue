@@ -1,4 +1,4 @@
-# 🐾 The Cat-alogue
+# The Cat-alogue
 
 <p align="center">
   <img src="app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" width="120" alt="The Cat-alogue App Logo" />
@@ -19,27 +19,27 @@
 
 ---
 
-## 📥 Download APK
+## Download APK
 
 Want to try the app on your phone? Download the latest pre-built APK directly from GitHub Releases:
 
-👉 **[Download Latest APK from GitHub Releases](https://github.com/ShashankS1011/The-Cat-alogue/releases/latest)**
+* **[Download Latest APK from GitHub Releases](https://github.com/ShashankS1011/The-Cat-alogue/releases/latest)**
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-- **🐱 Infinite Scroll Feed**: Infinite pagination feed powered by [The Cat API](https://thecatapi.com/). Never run out of cats!
-- **🔍 Breed Search**: Filter images by specific cat breeds (Bengal, Siamese, Persian, Maine Coon, and more) using a dynamic search dropdown.
-- **❤️ Favorites**: Mark your favorite cats with one tap and retrieve them anytime in the "My Favourites" screen.
-- **📲 Native Sharing**: Easily share cat image links directly to WhatsApp, Telegram, Twitter, or Instagram.
-- **🎨 Modern Material 3 UI**: Beautiful, warm cat-inspired palette (Deep Indigo, Terracotta, Soft Surface) with full **Dark Mode** support.
-- **🚀 Android 12+ Splash Screen**: Smooth application launch experience powered by `androidx.core:core-splashscreen`.
-- **😼 Funny "About Developer" Modal**: Interactive dialog revealing the caffeine-fueled developer story and coffee mug safety warnings!
+- **Infinite Scroll Feed**: Infinite pagination feed powered by [The Cat API](https://thecatapi.com/). Never run out of cats!
+- **Breed Search**: Filter images by specific cat breeds (Bengal, Siamese, Persian, Maine Coon, and more) using a dynamic search dropdown.
+- **Favorites**: Mark your favorite cats with one tap and retrieve them anytime in the "My Favourites" screen.
+- **Native Sharing**: Easily share cat image links directly to WhatsApp, Telegram, Twitter, or Instagram.
+- **Modern Material 3 UI**: Beautiful, warm cat-inspired palette (Deep Indigo, Terracotta, Soft Surface) with full **Dark Mode** support.
+- **Android 12+ Splash Screen**: Smooth application launch experience powered by `androidx.core:core-splashscreen`.
+- **Funny "About Developer" Modal**: Interactive dialog revealing the caffeine-fueled developer story and coffee mug safety warnings!
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## Architecture & Tech Stack
 
 **The Cat-alogue** is built adhering to strict modern Android production standards using pure **Java and XML**:
 
@@ -65,7 +65,7 @@ com.example.thecat_alogue
 
 ---
 
-## 🔒 Security & Policy Compliance
+## Security & Policy Compliance
 
 This repository enforces strict security practices:
 - **API Key Masking**: No hardcoded secrets in source code. Secrets are managed via `local.properties` and injected dynamically into `BuildConfig.CAT_API_KEY`.
@@ -75,7 +75,7 @@ This repository enforces strict security practices:
 
 ---
 
-## 😼 About The Developer
+## About The Developer
 
 > *"I built The Cat-alogue because my cats threatened to knock my coffee mug off the desk if I didn't build them an app to showcase their magnificence. Code powered by 90% caffeine and 10% purrs!"*
 > 
@@ -83,7 +83,7 @@ This repository enforces strict security practices:
 
 ---
 
-## 🛠️ How to Build & Run Locally
+## How to Build & Run Locally
 
 ### Prerequisites
 - **Android Studio**: Jellyfish (2023.3.1) or newer
@@ -123,8 +123,8 @@ This repository enforces strict security practices:
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-<p align="center">Made with ❤️ and ☕ by <a href="https://github.com/ShashankS1011">Shashank (TheSusHero)</a></p>
+<p align="center">Made by <a href="https://github.com/ShashankS1011">Shashank (TheSusHero)</a></p>

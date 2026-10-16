@@ -111,7 +111,7 @@ public class CatViewModel extends ViewModel {
         repository.addFavourite(imageId, DEFAULT_USER_ID, new CatRepository.RepositoryCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                toastMessageLiveData.setValue("Saved to Favourites! ❤️");
+                toastMessageLiveData.setValue("Saved to Favourites!");
             }
 
             @Override
