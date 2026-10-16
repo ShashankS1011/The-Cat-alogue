@@ -71,6 +71,10 @@ dependencies {
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
 
+    // Room Database
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

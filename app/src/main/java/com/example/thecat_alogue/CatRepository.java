@@ -1,9 +1,13 @@
 package com.example.thecat_alogue;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,6 +20,8 @@ public class CatRepository {
     private static final String BASE_URL = "https://api.thecatapi.com/";
     private static CatRepository instance;
     private final CatApiService apiService;
+    private final ExecutorService executorService;
+    private AppDatabase database;
 
     public interface RepositoryCallback<T> {
         void onSuccess(T result);
@@ -28,6 +34,7 @@ public class CatRepository {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         apiService = retrofit.create(CatApiService.class);
+        executorService = Executors.newFixedThreadPool(4);
     }
 
     public static synchronized CatRepository getInstance() {
@@ -35,6 +42,12 @@ public class CatRepository {
             instance = new CatRepository();
         }
         return instance;
+    }
+
+    public void initDatabase(Context context) {
+        if (database == null) {
+            database = AppDatabase.getInstance(context);
+        }
     }
 
     public CatApiService getApiService() {
@@ -90,37 +103,75 @@ public class CatRepository {
                     for (FavouriteResponse fav : response.body()) {
                         if (fav != null && fav.getImage() != null) {
                             favImages.add(fav.getImage());
+                            saveFavoriteToRoom(fav.getImage().getId(), fav.getImage().getUrl());
                         }
                     }
                     callback.onSuccess(favImages);
                 } else {
-                    callback.onError("Failed to fetch favourites.");
+                    loadFavoritesFromRoom(callback);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<FavouriteResponse>> call, @NonNull Throwable t) {
-                callback.onError("Network error fetching favourites.");
+                loadFavoritesFromRoom(callback);
             }
         });
     }
 
-    public void addFavourite(String imageId, String userId, RepositoryCallback<Boolean> callback) {
-        FavouriteRequest req = new FavouriteRequest(imageId, userId);
+    private void loadFavoritesFromRoom(RepositoryCallback<List<CatImage>> callback) {
+        if (database == null) {
+            callback.onError("No offline data available.");
+            return;
+        }
+
+        executorService.execute(() -> {
+            List<FavoriteCatEntity> entities = database.favoriteCatDao().getAllFavoritesSync();
+            List<CatImage> offlineCats = new ArrayList<>();
+            for (FavoriteCatEntity entity : entities) {
+                CatImage cat = new CatImage();
+                cat.setId(entity.getId());
+                cat.setUrl(entity.getUrl());
+                offlineCats.add(cat);
+            }
+            callback.onSuccess(offlineCats);
+        });
+    }
+
+    public void addFavourite(CatImage cat, String userId, RepositoryCallback<Boolean> callback) {
+        saveFavoriteToRoom(cat.getId(), cat.getUrl());
+
+        FavouriteRequest req = new FavouriteRequest(cat.getId(), userId);
         apiService.addFavourite(getApiKey(), req).enqueue(new Callback<FavouriteResponse>() {
             @Override
             public void onResponse(@NonNull Call<FavouriteResponse> call, @NonNull Response<FavouriteResponse> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(true);
                 } else {
-                    callback.onError("Error adding favourite: " + response.code());
+                    callback.onSuccess(true); // Saved locally
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<FavouriteResponse> call, @NonNull Throwable t) {
-                callback.onError("Network error saving favourite.");
+                callback.onSuccess(true); // Saved locally in Room
             }
         });
+    }
+
+    public void removeFavourite(String imageId, RepositoryCallback<Boolean> callback) {
+        if (database != null) {
+            executorService.execute(() -> database.favoriteCatDao().deleteById(imageId));
+        }
+        callback.onSuccess(true);
+    }
+
+    private void saveFavoriteToRoom(String id, String url) {
+        if (database != null && id != null && url != null) {
+            executorService.execute(() -> {
+                FavoriteCatEntity entity = new FavoriteCatEntity(id, url, System.currentTimeMillis());
+                database.favoriteCatDao().insert(entity);
+            });
+        }
     }
 }

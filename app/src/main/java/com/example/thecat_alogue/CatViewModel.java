@@ -1,13 +1,16 @@
 package com.example.thecat_alogue;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatViewModel extends ViewModel {
+public class CatViewModel extends AndroidViewModel {
 
     private static final String DEFAULT_USER_ID = "user_123";
 
@@ -20,8 +23,10 @@ public class CatViewModel extends ViewModel {
     private boolean isLoading = false;
     private List<CatImage> currentCatList = new ArrayList<>();
 
-    public CatViewModel() {
+    public CatViewModel(@NonNull Application application) {
+        super(application);
         this.repository = CatRepository.getInstance();
+        this.repository.initDatabase(application.getApplicationContext());
     }
 
     public LiveData<Resource<List<CatImage>>> getCatsLiveData() {
@@ -107,11 +112,26 @@ public class CatViewModel extends ViewModel {
         });
     }
 
-    public void addFavourite(String imageId) {
-        repository.addFavourite(imageId, DEFAULT_USER_ID, new CatRepository.RepositoryCallback<Boolean>() {
+    public void addFavourite(CatImage cat) {
+        repository.addFavourite(cat, DEFAULT_USER_ID, new CatRepository.RepositoryCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 toastMessageLiveData.setValue("Saved to Favourites!");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                toastMessageLiveData.setValue(errorMessage);
+            }
+        });
+    }
+
+    public void removeFavourite(String imageId) {
+        repository.removeFavourite(imageId, new CatRepository.RepositoryCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                toastMessageLiveData.setValue("Removed from Favourites!");
+                loadFavourites(); // Refresh list
             }
 
             @Override

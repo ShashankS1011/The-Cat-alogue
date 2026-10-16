@@ -29,7 +29,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // --- RecyclerView & Adapter ---
         adapter = new CatAdapter(
-                cat -> viewModel.addFavourite(cat.getId()),
+                cat -> viewModel.addFavourite(cat),
                 this::showCatPreviewDialog
         );
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -195,10 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupGreeting() {
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        String greeting = (hour >= 5 && hour < 12) ? getString(R.string.good_morning) :
-                (hour >= 12 && hour < 17) ? getString(R.string.good_afternoon) :
-                        (hour >= 17 && hour < 21) ? getString(R.string.good_evening) : getString(R.string.hello_night_owl);
+        String greeting = getString(CatUtils.getTimeGreeting());
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(greeting);
         }
@@ -251,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         dialogBinding.btnPreviewFavorite.setOnClickListener(v -> {
-            viewModel.addFavourite(cat.getId());
+            viewModel.addFavourite(cat);
             dialog.dismiss();
         });
 
