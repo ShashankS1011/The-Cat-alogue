@@ -1,13 +1,23 @@
 package com.example.thecat_alogue;
 
+import androidx.annotation.Nullable;
+
+import com.google.gson.annotations.SerializedName;
+
 public class CatImage {
+
+    @SerializedName("id")
     private String id;
+
+    @SerializedName("url")
     private String url;
 
-    // Getters
+    @Nullable
     public String getId() { return id; }
+
+    @Nullable
     public String getUrl() { return url; }
-    // Setter for manual search results
-    public void setUrl(String url) { this.url = url; }
-    public void setId(String id) { this.id = id; }
+
+    public void setUrl(@Nullable String url) { this.url = url; }
+    public void setId(@Nullable String id) { this.id = id; }
 }
