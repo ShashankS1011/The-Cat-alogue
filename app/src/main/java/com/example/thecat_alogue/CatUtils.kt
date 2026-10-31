@@ -8,6 +8,10 @@ import android.os.Environment
 import android.widget.Toast
 import java.util.Calendar
 
+/**
+ * Utility functions for greeting messages, media downloads, and sharing.
+ * Image download and favourites enhancements co-authored with @Butteryjam.
+ */
 object CatUtils {
 
     @JvmStatic
