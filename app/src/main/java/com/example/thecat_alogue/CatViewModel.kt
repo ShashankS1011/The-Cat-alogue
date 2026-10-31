@@ -88,4 +88,13 @@ class CatViewModel(application: Application) : AndroidViewModel(application) {
             _catFactState.value = fact
         }
     }
+
+    fun addBookmark(cat: CatImage) {
+        val catId = cat.id ?: return
+        val catUrl = cat.url ?: return
+        viewModelScope.launch {
+            repository.addBookmark(catId, catUrl)
+            _toastMessageEvent.emit("Saved to Bookmarks!")
+        }
+    }
 }

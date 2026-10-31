@@ -65,12 +65,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@+id/btnRefreshFact"
+                        android:layout_toStartOf="@+id/btnSpeakFact"
                         android:layout_centerVertical="true"
                         android:text="@string/cat_fact_title"
                         android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
                         android:textColor="@color/primary_gold"
                         android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btnSpeakFact"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_toStartOf="@+id/btnRefreshFact"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/cat_fact_title"
+                        android:src="@drawable/ic_speaker"
+                        app:tint="@color/primary_gold" />
 
                     <ImageButton
                         android:id="@+id/btnRefreshFact"

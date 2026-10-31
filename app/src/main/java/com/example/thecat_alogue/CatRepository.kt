@@ -75,6 +75,10 @@ class CatRepository private constructor() {
         }
     }
 
+    suspend fun addBookmark(catId: String, catUrl: String) = withContext(Dispatchers.IO) {
+        database?.bookmarkDao()?.insert(BookmarkEntity(catId, catUrl))
+    }
+
     companion object {
         @Volatile
         private var instance: CatRepository? = null

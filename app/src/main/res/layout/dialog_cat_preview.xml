@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="4dp"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_download"
             app:iconTint="@color/download_teal"
@@ -44,12 +44,27 @@
             android:text="@string/download" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPreviewBookmark"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_nav_search"
+            app:iconTint="@color/primary_gold"
+            app:strokeColor="@color/primary_gold"
+            android:textColor="@color/primary_gold"
+            android:text="Bookmark" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPreviewShare"
             style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="4dp"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_share"
             app:iconTint="@color/white"

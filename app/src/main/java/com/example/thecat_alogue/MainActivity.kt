@@ -1,14 +1,24 @@
 package com.example.thecat_alogue
 
+import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.view.HapticFeedbackConstants
 import android.view.MenuItem
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +38,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,8 +48,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var networkObserver: NetworkObserver
     private var selectedBreed: Breed? = null
 
+    private var textToSpeech: TextToSpeech? = null
+    private var sensorManager: SensorManager? = null
+    private var lastShakeTime: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -56,6 +72,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        // --- Text To Speech ---
+        initTextToSpeech()
+
+        // --- Accelerometer Shake Detector ---
+        initShakeDetector()
 
         // --- RecyclerView & Adapter ---
         adapter = CatAdapter(
@@ -89,6 +111,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Cat Fact Refresh Button
         binding.btnRefreshFact.setOnClickListener { viewModel.loadCatFact() }
 
+        // Cat Fact Speak Button
+        binding.btnSpeakFact.setOnClickListener {
+            val fact = binding.txtCatFact.text.toString()
+            if (fact.isNotEmpty()) {
+                speakFact(fact)
+            }
+        }
+
         // Breed Info Button Listener
         binding.btnBreedInfo.setOnClickListener {
             val breed = selectedBreed
@@ -115,11 +145,73 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         observeViewModel()
         observeNetwork()
 
+        // --- Handle Shortcut Intent ---
+        handleShortcutIntent(intent)
+
         // --- Initial Load ---
         if (savedInstanceState == null) {
             viewModel.loadBreeds()
             viewModel.loadCats(isPagination = false)
             viewModel.loadCatFact()
+        }
+    }
+
+    override fun onDestroy() {
+        textToSpeech?.stop()
+        textToSpeech?.shutdown()
+        super.onDestroy()
+    }
+
+    private fun initTextToSpeech() {
+        textToSpeech = TextToSpeech(this) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech?.language = Locale.US
+            }
+        }
+    }
+
+    private fun speakFact(factText: String) {
+        textToSpeech?.speak(factText, TextToSpeech.QUEUE_FLUSH, null, "CAT_FACT_TTS")
+    }
+
+    private fun initShakeDetector() {
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as? SensorManager
+        val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        if (accelerometer != null) {
+            sensorManager?.registerListener(object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    val x = event.values[0]
+                    val y = event.values[1]
+                    val z = event.values[2]
+                    val gX = x / SensorManager.GRAVITY_EARTH
+                    val gY = y / SensorManager.GRAVITY_EARTH
+                    val gZ = z / SensorManager.GRAVITY_EARTH
+                    val gForce = Math.sqrt((gX * gX + gY * gY + gZ * gZ).toDouble()).toFloat()
+
+                    if (gForce > 2.7f) {
+                        val currentTime = System.currentTimeMillis()
+                        if (currentTime - lastShakeTime > 2000) {
+                            lastShakeTime = currentTime
+                            binding.root.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                            Toast.makeText(this@MainActivity, "Shaken! Fetching fresh felines...", Toast.LENGTH_SHORT).show()
+                            viewModel.loadCats(isPagination = false)
+                        }
+                    }
+                }
+
+                override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+            }, accelerometer, SensorManager.SENSOR_DELAY_UI)
+        }
+    }
+
+    private fun handleShortcutIntent(intent: Intent?) {
+        val action = intent?.getStringExtra("shortcut_action")
+        if (action == "search") {
+            binding.searchContainer.visibility = View.VISIBLE
+        } else if (action == "random") {
+            binding.searchContainer.visibility = View.GONE
+            viewModel.currentBreedId = null
+            viewModel.loadCats(isPagination = false)
         }
     }
 
@@ -271,6 +363,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             CatUtils.downloadImage(this, cat.url, cat.id)
         }
 
+        dialogBinding.btnPreviewBookmark.setOnClickListener {
+            viewModel.addBookmark(cat)
+            dialog.dismiss()
+        }
+
         dialogBinding.btnPreviewShare.setOnClickListener {
             CatUtils.shareImageWithFileProvider(this, cat.url)
         }
@@ -278,10 +375,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialog.show()
     }
 
-    private fun setupPinchToZoom(imageView: android.widget.ImageView) {
+    private fun setupPinchToZoom(imageView: ImageView) {
         var scaleFactor = 1.0f
-        val scaleDetector = android.view.ScaleGestureDetector(this, object : android.view.ScaleGestureDetector.SimpleOnScaleGestureListener() {
-            override fun onScale(detector: android.view.ScaleGestureDetector): Boolean {
+        val scaleDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
                 scaleFactor *= detector.scaleFactor
                 scaleFactor = scaleFactor.coerceIn(1.0f, 4.0f)
                 imageView.scaleX = scaleFactor

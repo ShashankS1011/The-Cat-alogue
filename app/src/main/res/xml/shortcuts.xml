@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="random_cats"
+        android:enabled="true"
+        android:icon="@drawable/ic_nav_home"
+        android:shortcutShortLabel="@string/nav_random_cats"
+        android:shortcutLongLabel="@string/nav_random_cats">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.thecat_alogue"
+            android:targetClass="com.example.thecat_alogue.MainActivity">
+            <extra android:name="shortcut_action" android:value="random" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="search_breeds"
+        android:enabled="true"
+        android:icon="@drawable/ic_nav_search"
+        android:shortcutShortLabel="@string/nav_search_breeds"
+        android:shortcutLongLabel="@string/nav_search_breeds">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.thecat_alogue"
+            android:targetClass="com.example.thecat_alogue.MainActivity">
+            <extra android:name="shortcut_action" android:value="search" />
+        </intent>
+    </shortcut>
+</shortcuts>
