@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_explore" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:title="@string/nav_random_cats"
@@ -9,9 +9,27 @@
             android:id="@+id/nav_search"
             android:title="@string/nav_search_breeds"
             android:icon="@drawable/ic_nav_search" />
-        <item
-            android:id="@+id/nav_about"
-            android:title="@string/nav_about_dev"
-            android:icon="@drawable/ic_nav_about" />
     </group>
+
+    <item android:title="MY LIBRARY">
+        <menu>
+            <item
+                android:id="@+id/nav_bookmarks"
+                android:title="@string/nav_my_bookmarks"
+                android:icon="@drawable/ic_nav_bookmark" />
+        </menu>
+    </item>
+
+    <item android:title="APP &amp; COMMUNITY">
+        <menu>
+            <item
+                android:id="@+id/nav_share_app"
+                android:title="@string/nav_share_app"
+                android:icon="@drawable/ic_share" />
+            <item
+                android:id="@+id/nav_about"
+                android:title="@string/nav_about_dev"
+                android:icon="@drawable/ic_nav_about" />
+        </menu>
+    </item>
 </menu>

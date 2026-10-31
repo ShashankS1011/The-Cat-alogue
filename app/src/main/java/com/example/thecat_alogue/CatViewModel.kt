@@ -89,6 +89,21 @@ class CatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun loadBookmarks() {
+        _catsUiState.value = Resource.loading()
+        viewModelScope.launch {
+            val result = repository.getBookmarks()
+            result.fold(
+                onSuccess = { bookmarks ->
+                    _catsUiState.value = Resource.success(bookmarks)
+                },
+                onFailure = { error ->
+                    _catsUiState.value = Resource.error(error.localizedMessage ?: "Failed to load bookmarks")
+                }
+            )
+        }
+    }
+
     fun addBookmark(cat: CatImage) {
         val catId = cat.id ?: return
         val catUrl = cat.url ?: return

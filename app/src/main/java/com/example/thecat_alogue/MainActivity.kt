@@ -444,6 +444,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     viewModel.loadCats(isPagination = false)
                 }
             }
+            R.id.nav_bookmarks -> {
+                binding.searchContainer.visibility = View.GONE
+                viewModel.loadBookmarks()
+            }
+            R.id.nav_share_app -> {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_message))
+                }
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)))
+            }
             R.id.nav_about -> {
                 showAboutDialog()
             }

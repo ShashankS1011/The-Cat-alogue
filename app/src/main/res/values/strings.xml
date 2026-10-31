@@ -43,4 +43,8 @@
     <string name="confirm_clear_favourites">Are you sure you want to clear all your saved favourites?</string>
     <string name="clear">Clear</string>
     <string name="offline_banner_text">Offline Mode • Showing Cached Felines</string>
+    <string name="nav_my_bookmarks">My Bookmarks</string>
+    <string name="nav_share_app">Share App</string>
+    <string name="no_bookmarks">No bookmarked cats saved yet!</string>
+    <string name="share_app_message">Check out The Cat-alogue app on GitHub!\nhttps://github.com/ShashankS1011/The-Cat-alogue</string>
 </resources>

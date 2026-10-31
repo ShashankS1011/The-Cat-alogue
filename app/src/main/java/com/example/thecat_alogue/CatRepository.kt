@@ -75,6 +75,12 @@ class CatRepository private constructor() {
         }
     }
 
+    suspend fun getBookmarks(): Result<List<CatImage>> = withContext(Dispatchers.IO) {
+        val entities = database?.bookmarkDao()?.getAllBookmarks() ?: emptyList()
+        val images = entities.map { CatImage(id = it.id, url = it.url) }
+        Result.success(images)
+    }
+
     suspend fun addBookmark(catId: String, catUrl: String) = withContext(Dispatchers.IO) {
         database?.bookmarkDao()?.insert(BookmarkEntity(catId, catUrl))
     }

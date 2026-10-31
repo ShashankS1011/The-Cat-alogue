@@ -50,4 +50,24 @@ class CatDataModelTest {
         val url = "https://cdn2.thecatapi.com/images/test.gif"
         assertEquals("Check out this cat!\nhttps://cdn2.thecatapi.com/images/test.gif", CatUtils.formatShareMessage(url))
     }
+
+    @Test
+    fun testCatFactAndEntities() {
+        val fact = CatFact(fact = "Cats sleep 70% of their day", length = 27)
+        assertEquals("Cats sleep 70% of their day", fact.fact)
+        assertEquals(27, fact.length)
+
+        val breedEntity = BreedEntity("siam", "Siamese", origin = "Thailand")
+        val domainBreed = breedEntity.toDomainModel()
+        assertEquals("siam", domainBreed.id)
+        assertEquals("Siamese", domainBreed.name)
+
+        val catEntity = CachedCatEntity("c101", "https://cat.com/1.jpg")
+        val domainCat = catEntity.toDomainModel()
+        assertEquals("c101", domainCat.id)
+
+        val bookmark = BookmarkEntity("b1", "https://cat.com/b1.jpg", "My Kittens")
+        assertEquals("b1", bookmark.id)
+        assertEquals("My Kittens", bookmark.collectionName)
+    }
 }
