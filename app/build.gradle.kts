@@ -2,6 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.ksp)
 }
 
 val localProperties = Properties()
@@ -68,7 +69,7 @@ dependencies {
 
     // Image Loading
     implementation(libs.glide.core)
-    annotationProcessor(libs.glide.compiler)
+    ksp(libs.glide.compiler)
 
     // Lifecycle (ViewModel, LiveData & Coroutine Scope)
     implementation(libs.lifecycle.viewmodel)
@@ -78,7 +79,7 @@ dependencies {
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
 
     // Testing
     testImplementation(libs.junit)
