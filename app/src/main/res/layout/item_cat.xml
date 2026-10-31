@@ -37,35 +37,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
-            android:padding="8dp">
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
 
             <ImageButton
                 android:id="@+id/btnDownload"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
                 android:src="@drawable/ic_download"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
-                android:layout_marginEnd="12dp"
                 android:contentDescription="@string/download"
                 app:tint="@color/primary_gold" />
 
             <ImageButton
                 android:id="@+id/btnShare"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
                 android:src="@drawable/ic_share"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
-                android:layout_marginEnd="12dp"
                 android:contentDescription="@string/share_via"
                 app:tint="@color/share_gold" />
 
             <ImageButton
                 android:id="@+id/btnFavourite"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
                 android:src="@drawable/ic_favourite"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
