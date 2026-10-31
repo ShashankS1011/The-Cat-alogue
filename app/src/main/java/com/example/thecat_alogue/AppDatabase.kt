@@ -8,15 +8,17 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [
         BreedEntity::class,
-        CachedCatEntity::class
+        CachedCatEntity::class,
+        BookmarkEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun breedDao(): BreedDao
     abstract fun cachedCatDao(): CachedCatDao
+    abstract fun bookmarkDao(): BookmarkDao
 
     companion object {
         @Volatile

@@ -124,12 +124,25 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <Spinner
-                    android:id="@+id/breedSpinner"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_spinner" />
+                    app:boxStrokeColor="@color/primary_gold"
+                    app:hintTextColor="@color/primary_gold">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/breedAutoComplete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textColor="@color/primary_gold"
+                        android:textStyle="bold"
+                        android:inputType="textFilter" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageButton
                     android:id="@+id/btnBreedInfo"

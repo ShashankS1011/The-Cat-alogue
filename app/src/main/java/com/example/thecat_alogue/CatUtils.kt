@@ -6,6 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.Calendar
 
 /**
@@ -36,12 +43,44 @@ object CatUtils {
             Toast.makeText(context, "Invalid cat image URL", Toast.LENGTH_SHORT).show()
             return
         }
-        val message = formatShareMessage(url)
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, message)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val downloadedFile = Glide.with(context.applicationContext)
+                    .asFile()
+                    .load(url)
+                    .submit()
+                    .get()
+
+                val sharedDir = File(context.cacheDir, "images").apply { mkdirs() }
+                val sharedFile = File(sharedDir, "cat_shared_${System.currentTimeMillis()}.jpg")
+                downloadedFile.copyTo(sharedFile, overwrite = true)
+
+                val contentUri = FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.fileprovider",
+                    sharedFile
+                )
+
+                withContext(Dispatchers.Main) {
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "image/*"
+                        putExtra(Intent.EXTRA_STREAM, contentUri)
+                        putExtra(Intent.EXTRA_TEXT, formatShareMessage(url))
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_via)))
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, formatShareMessage(url))
+                    }
+                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_via)))
+                }
+            }
         }
-        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_via)))
     }
 
     @JvmStatic

@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 launch {
                     viewModel.breedsUiState.collectLatest { resource ->
                         if (resource.isSuccess && resource.data != null) {
-                            setupBreedSpinner(resource.data)
+                            setupBreedAutoComplete(resource.data)
                         }
                     }
                 }
@@ -200,26 +200,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun setupBreedSpinner(breeds: List<Breed>) {
-        val spinnerAdapter = ArrayAdapter(
+    private fun setupBreedAutoComplete(breeds: List<Breed>) {
+        val adapter = ArrayAdapter(
             this,
-            R.layout.spinner_item,
+            R.layout.spinner_dropdown_item,
             breeds
-        ).apply {
-            setDropDownViewResource(R.layout.spinner_dropdown_item)
-        }
-        binding.breedSpinner.adapter = spinnerAdapter
+        )
+        binding.breedAutoComplete.setAdapter(adapter)
 
-        binding.breedSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedBreed = parent?.getItemAtPosition(position) as? Breed
-                if (binding.searchContainer.visibility == View.VISIBLE && selectedBreed != null) {
-                    viewModel.currentBreedId = selectedBreed?.id
-                    viewModel.loadCats(isPagination = false)
-                }
+        binding.breedAutoComplete.setOnItemClickListener { parent, _, position, _ ->
+            selectedBreed = parent.getItemAtPosition(position) as? Breed
+            if (selectedBreed != null) {
+                viewModel.currentBreedId = selectedBreed?.id
+                viewModel.loadCats(isPagination = false)
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
@@ -265,6 +259,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .load(cat.url)
             .into(dialogBinding.previewCatImage)
 
+        setupPinchToZoom(dialogBinding.previewCatImage)
+
         val dialog = MaterialAlertDialogBuilder(this)
             .setTitle(R.string.cat_detail_title)
             .setView(dialogBinding.root)
@@ -280,6 +276,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         dialog.show()
+    }
+
+    private fun setupPinchToZoom(imageView: android.widget.ImageView) {
+        var scaleFactor = 1.0f
+        val scaleDetector = android.view.ScaleGestureDetector(this, object : android.view.ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: android.view.ScaleGestureDetector): Boolean {
+                scaleFactor *= detector.scaleFactor
+                scaleFactor = scaleFactor.coerceIn(1.0f, 4.0f)
+                imageView.scaleX = scaleFactor
+                imageView.scaleY = scaleFactor
+                return true
+            }
+        })
+
+        imageView.setOnTouchListener { _, event ->
+            scaleDetector.onTouchEvent(event)
+            true
+        }
     }
 
     private fun showAboutDialog() {
@@ -302,9 +316,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_search -> {
                 binding.searchContainer.visibility = View.VISIBLE
-                val breed = selectedBreed ?: (binding.breedSpinner.selectedItem as? Breed)
+                val breed = selectedBreed
                 if (breed != null) {
-                    selectedBreed = breed
                     viewModel.currentBreedId = breed.id
                     viewModel.loadCats(isPagination = false)
                 }
