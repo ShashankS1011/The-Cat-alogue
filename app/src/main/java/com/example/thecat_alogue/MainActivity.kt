@@ -122,7 +122,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Retry Button Listener
         binding.btnRetry.setOnClickListener {
             binding.emptyStateContainer.visibility = View.GONE
-            viewModel.loadCats(isPagination = false)
+            if (viewModel.isBookmarksMode.value) {
+                viewModel.loadBookmarks()
+            } else {
+                viewModel.loadCats(isPagination = false)
+            }
         }
 
         // Cat Fact Refresh Button
@@ -276,6 +280,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             if (list.isEmpty()) {
                                 binding.emptyStateContainer.visibility = View.VISIBLE
                                 binding.recyclerView.visibility = View.GONE
+                                if (viewModel.isBookmarksMode.value) {
+                                    binding.emptyStateTitle.setText(R.string.no_bookmarks_title)
+                                    binding.emptyStateSubtitle.setText(R.string.no_bookmarks_subtitle)
+                                    binding.btnRetry.visibility = View.GONE
+                                } else {
+                                    binding.emptyStateTitle.setText(R.string.empty_state_title)
+                                    binding.emptyStateSubtitle.setText(R.string.empty_state_subtitle)
+                                    binding.btnRetry.visibility = View.VISIBLE
+                                }
                             } else {
                                 binding.emptyStateContainer.visibility = View.GONE
                                 binding.recyclerView.visibility = View.VISIBLE
@@ -286,6 +299,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             if (adapter.itemCount == 0) {
                                 binding.emptyStateContainer.visibility = View.VISIBLE
                                 binding.recyclerView.visibility = View.GONE
+                                if (viewModel.isBookmarksMode.value) {
+                                    binding.emptyStateTitle.setText(R.string.no_bookmarks_title)
+                                    binding.emptyStateSubtitle.setText(R.string.no_bookmarks_subtitle)
+                                    binding.btnRetry.visibility = View.GONE
+                                } else {
+                                    binding.emptyStateTitle.setText(R.string.empty_state_title)
+                                    binding.emptyStateSubtitle.setText(R.string.empty_state_subtitle)
+                                    binding.btnRetry.visibility = View.VISIBLE
+                                }
                             }
                             Toast.makeText(
                                 this@MainActivity,

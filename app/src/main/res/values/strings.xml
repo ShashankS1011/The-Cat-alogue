@@ -46,5 +46,7 @@
     <string name="nav_my_bookmarks">My Bookmarks</string>
     <string name="nav_share_app">Share App</string>
     <string name="no_bookmarks">No bookmarked cats saved yet!</string>
+    <string name="no_bookmarks_title">No Bookmarks Saved</string>
+    <string name="no_bookmarks_subtitle">Explore cats and tap Bookmark on any image preview to save them to your local collection.</string>
     <string name="share_app_message">Check out The Cat-alogue app on GitHub!\nhttps://github.com/ShashankS1011/The-Cat-alogue</string>
 </resources>
