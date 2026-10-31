@@ -23,4 +23,5 @@
     <!-- Icons -->
     <color name="fav_red">#FF5252</color>
     <color name="share_gold">#FFC107</color>
+    <color name="download_teal">#26A69A</color>
 </resources>

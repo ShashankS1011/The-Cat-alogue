@@ -50,7 +50,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitCenter"
                 android:contentDescription="@string/download"
-                app:tint="@color/primary_gold" />
+                app:tint="@color/download_teal" />
 
             <ImageButton
                 android:id="@+id/btnShare"
