@@ -175,15 +175,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onDestroy()
     }
 
+    private var isTtsInitialized = false
+
     private fun initTextToSpeech() {
-        textToSpeech = TextToSpeech(this) { status ->
+        textToSpeech = TextToSpeech(applicationContext) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                textToSpeech?.language = Locale.US
+                val result = textToSpeech?.setLanguage(Locale.US)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    textToSpeech?.setLanguage(Locale.getDefault())
+                }
+                isTtsInitialized = true
+            } else {
+                isTtsInitialized = false
             }
         }
     }
 
     private fun speakFact(factText: String) {
+        if (!isTtsInitialized || textToSpeech == null) {
+            Toast.makeText(this, "Speech engine initializing, tap again in a moment...", Toast.LENGTH_SHORT).show()
+            return
+        }
         textToSpeech?.speak(factText, TextToSpeech.QUEUE_FLUSH, null, "CAT_FACT_TTS")
     }
 
