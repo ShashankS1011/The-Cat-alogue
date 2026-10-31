@@ -203,10 +203,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupBreedSpinner(breeds: List<Breed>) {
         val spinnerAdapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             breeds
         ).apply {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            setDropDownViewResource(R.layout.spinner_dropdown_item)
         }
         binding.breedSpinner.adapter = spinnerAdapter
 
@@ -302,7 +302,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_search -> {
                 binding.searchContainer.visibility = View.VISIBLE
-                adapter.submitList(emptyList())
+                val breed = selectedBreed ?: (binding.breedSpinner.selectedItem as? Breed)
+                if (breed != null) {
+                    selectedBreed = breed
+                    viewModel.currentBreedId = breed.id
+                    viewModel.loadCats(isPagination = false)
+                }
             }
             R.id.nav_about -> {
                 showAboutDialog()

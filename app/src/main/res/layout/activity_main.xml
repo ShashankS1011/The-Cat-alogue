@@ -106,7 +106,9 @@
             android:visibility="gone"
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="@color/dark_surface_variant">
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_search_container">
 
             <TextView
                 android:layout_width="wrap_content"
