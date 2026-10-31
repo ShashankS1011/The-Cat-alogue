@@ -76,27 +76,9 @@ class CatRepository private constructor() {
     }
 
     suspend fun getFavourites(userId: String): Result<List<CatImage>> = withContext(Dispatchers.IO) {
-        if (getApiKey().isBlank()) {
-            val localFavs = database?.favoriteCatDao()?.getAllFavoritesSync() ?: emptyList()
-            val images = localFavs.map { CatImage(id = it.id, url = it.url) }
-            return@withContext Result.success(images)
-        }
-
-        try {
-            val remoteFavs = apiService.getFavourites(getApiKey(), userId)
-            val favImages = remoteFavs.mapNotNull { fav ->
-                val image = fav.image
-                if (image?.id != null && image.url != null) {
-                    saveFavoriteToRoomInternal(image.id!!, image.url!!)
-                    image
-                } else null
-            }
-            Result.success(favImages)
-        } catch (e: Exception) {
-            val localFavs = database?.favoriteCatDao()?.getAllFavoritesSync() ?: emptyList()
-            val images = localFavs.map { CatImage(id = it.id, url = it.url) }
-            Result.success(images)
-        }
+        val localFavs = database?.favoriteCatDao()?.getAllFavoritesSync() ?: emptyList()
+        val images = localFavs.map { CatImage(id = it.id, url = it.url) }
+        Result.success(images)
     }
 
     suspend fun addFavourite(cat: CatImage, userId: String): Result<Boolean> = withContext(Dispatchers.IO) {
