@@ -10,10 +10,6 @@
             android:title="@string/nav_search_breeds"
             android:icon="@drawable/ic_nav_search" />
         <item
-            android:id="@+id/nav_favourites"
-            android:title="@string/nav_my_favourites"
-            android:icon="@drawable/ic_nav_favourites" />
-        <item
             android:id="@+id/nav_about"
             android:title="@string/nav_about_dev"
             android:icon="@drawable/ic_nav_about" />

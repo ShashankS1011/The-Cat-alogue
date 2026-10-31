@@ -17,7 +17,6 @@ import com.bumptech.glide.request.target.Target
 import com.example.thecat_alogue.databinding.ItemCatBinding
 
 class CatAdapter @JvmOverloads constructor(
-    private val favouriteClickListener: (CatImage) -> Unit,
     private val catClickListener: (CatImage) -> Unit,
     private val downloadClickListener: ((CatImage) -> Unit)? = null
 ) : ListAdapter<CatImage, CatAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -72,21 +71,6 @@ class CatAdapter @JvmOverloads constructor(
             } else {
                 CatUtils.downloadImage(context, cat.url, cat.id)
             }
-        }
-
-        holder.binding.btnFavourite.setOnClickListener { view ->
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            holder.binding.btnFavourite.setImageResource(R.drawable.ic_favourite_filled)
-            holder.binding.btnFavourite.animate()
-                .scaleX(1.3f)
-                .scaleY(1.3f)
-                .setDuration(150)
-                .withEndAction {
-                    holder.binding.btnFavourite.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
-                }
-                .start()
-
-            favouriteClickListener(cat)
         }
 
         holder.binding.btnShare.setOnClickListener { view ->

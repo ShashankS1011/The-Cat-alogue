@@ -16,11 +16,12 @@ class CatDataModelTest {
     }
 
     @Test
-    fun testFavouriteRequestCreation() {
-        val request = FavouriteRequest("cat_456", "user_101")
-        assertNotNull(request)
-        assertEquals("cat_456", request.imageId)
-        assertEquals("user_101", request.subId)
+    fun testBreedModelCreation() {
+        val breed = Breed(id = "beng", name = "Bengal", origin = "United States")
+        assertNotNull(breed)
+        assertEquals("beng", breed.id)
+        assertEquals("Bengal", breed.name)
+        assertEquals("Bengal", breed.toString())
     }
 
     @Test

@@ -58,27 +58,13 @@
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
+                android:layout_marginStart="4dp"
                 android:src="@drawable/ic_share"
                 android:background="@drawable/bg_action_btn_share"
                 android:scaleType="fitCenter"
                 android:padding="6dp"
                 android:contentDescription="@string/share_via"
                 app:tint="@color/share_gold" />
-
-            <ImageButton
-                android:id="@+id/btnFavourite"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ic_favourite"
-                android:background="@drawable/bg_action_btn_favourite"
-                android:scaleType="fitCenter"
-                android:padding="6dp"
-                android:contentDescription="@string/nav_my_favourites"
-                app:tint="@color/fav_red" />
 
         </LinearLayout>
 

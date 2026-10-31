@@ -7,16 +7,14 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [
-        FavoriteCatEntity::class,
         BreedEntity::class,
         CachedCatEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun favoriteCatDao(): FavoriteCatDao
     abstract fun breedDao(): BreedDao
     abstract fun cachedCatDao(): CachedCatDao
 

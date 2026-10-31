@@ -3,8 +3,6 @@ package com.example.thecat_alogue
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -61,7 +59,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // --- RecyclerView & Adapter ---
         adapter = CatAdapter(
-            favouriteClickListener = { cat -> viewModel.toggleFavourite(cat) },
             catClickListener = { cat -> showCatPreviewDialog(cat) },
             downloadClickListener = { cat -> CatUtils.downloadImage(this, cat.url, cat.id) }
         )
@@ -80,11 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Pull to Refresh Listener
         binding.swipeRefreshLayout.setOnRefreshListener {
-            if (viewModel.isFavouritesMode.value) {
-                viewModel.loadFavourites()
-            } else {
-                viewModel.loadCats(isPagination = false)
-            }
+            viewModel.loadCats(isPagination = false)
         }
 
         // Retry Button Listener
@@ -127,27 +120,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             viewModel.loadBreeds()
             viewModel.loadCats(isPagination = false)
             viewModel.loadCatFact()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val clearFavsItem = menu.findItem(R.id.action_clear_favourites)
-        clearFavsItem?.isVisible = viewModel.isFavouritesMode.value
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_clear_favourites -> {
-                showConfirmClearFavouritesDialog()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -222,12 +194,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 launch {
                     viewModel.toastMessageEvent.collectLatest { message ->
                         Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                launch {
-                    viewModel.isFavouritesMode.collectLatest {
-                        invalidateOptionsMenu()
                     }
                 }
             }
@@ -313,23 +279,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             CatUtils.shareImageWithFileProvider(this, cat.url)
         }
 
-        dialogBinding.btnPreviewFavorite.setOnClickListener {
-            viewModel.toggleFavourite(cat)
-            dialog.dismiss()
-        }
-
         dialog.show()
-    }
-
-    private fun showConfirmClearFavouritesDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.clear_all_favourites)
-            .setMessage(R.string.confirm_clear_favourites)
-            .setPositiveButton(R.string.clear) { _, _ ->
-                viewModel.clearAllFavourites()
-            }
-            .setNegativeButton(R.string.close, null)
-            .show()
     }
 
     private fun showAboutDialog() {
@@ -353,10 +303,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_search -> {
                 binding.searchContainer.visibility = View.VISIBLE
                 adapter.submitList(emptyList())
-            }
-            R.id.nav_favourites -> {
-                binding.searchContainer.visibility = View.GONE
-                viewModel.loadFavourites()
             }
             R.id.nav_about -> {
                 showAboutDialog()

@@ -75,41 +75,6 @@ class CatRepository private constructor() {
         }
     }
 
-    suspend fun getFavourites(userId: String): Result<List<CatImage>> = withContext(Dispatchers.IO) {
-        val localFavs = database?.favoriteCatDao()?.getAllFavoritesSync() ?: emptyList()
-        val images = localFavs.map { CatImage(id = it.id, url = it.url) }
-        Result.success(images)
-    }
-
-    suspend fun addFavourite(cat: CatImage, userId: String): Result<Boolean> = withContext(Dispatchers.IO) {
-        val catId = cat.id ?: return@withContext Result.failure(IllegalArgumentException("Cat ID missing"))
-        val catUrl = cat.url ?: return@withContext Result.failure(IllegalArgumentException("Cat URL missing"))
-
-        saveFavoriteToRoomInternal(catId, catUrl)
-
-        if (getApiKey().isNotBlank()) {
-            try {
-                val request = FavouriteRequest(catId, userId)
-                apiService.addFavourite(getApiKey(), request)
-            } catch (ignored: Exception) {}
-        }
-        Result.success(true)
-    }
-
-    suspend fun removeFavourite(imageId: String): Result<Boolean> = withContext(Dispatchers.IO) {
-        database?.favoriteCatDao()?.deleteById(imageId)
-        Result.success(true)
-    }
-
-    suspend fun clearAllFavourites(): Result<Boolean> = withContext(Dispatchers.IO) {
-        database?.favoriteCatDao()?.deleteAll()
-        Result.success(true)
-    }
-
-    private suspend fun saveFavoriteToRoomInternal(id: String, url: String) {
-        database?.favoriteCatDao()?.insert(FavoriteCatEntity(id, url, System.currentTimeMillis()))
-    }
-
     companion object {
         @Volatile
         private var instance: CatRepository? = null

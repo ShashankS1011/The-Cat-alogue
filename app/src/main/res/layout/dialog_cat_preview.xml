@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="6dp"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_download"
             app:iconTint="@color/download_teal"
@@ -45,32 +45,17 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPreviewShare"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            app:cornerRadius="12dp"
-            app:icon="@drawable/ic_share"
-            app:iconTint="@color/share_gold"
-            app:strokeColor="@color/share_gold"
-            android:textColor="@color/share_gold"
-            android:text="@string/share_via" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnPreviewFavorite"
             style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             app:cornerRadius="12dp"
-            app:icon="@drawable/ic_favourite"
+            app:icon="@drawable/ic_share"
             app:iconTint="@color/white"
-            android:backgroundTint="@color/crimson_red"
-            android:textColor="@color/white"
-            android:text="@string/nav_my_favourites" />
+            android:backgroundTint="@color/primary_gold"
+            android:textColor="@color/on_primary_gold"
+            android:text="@string/share_via" />
 
     </LinearLayout>
 
