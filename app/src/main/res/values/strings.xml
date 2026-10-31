@@ -21,9 +21,9 @@
     <string name="good_afternoon">Good Afternoon!</string>
     <string name="good_evening">Good Evening!</string>
     <string name="hello_night_owl">Hello Night Owl!</string>
-    <string name="credits_text">Made by TheSusHero</string>
+    <string name="credits_text">Made by Shashank</string>
     <string name="about_dialog_title">About The Developer</string>
-    <string name="about_dialog_funny" formatted="false">Hi there, I\'m Shashank (aka TheSusHero)!\n\nFun fact: I don\'t actually own any cats (yet!), but I\'m an absolute fan of both cats and dogs! I built The Cat-alogue to share the joy of feline friends with everyone.\n\nCode powered by 90% caffeine, 10% pet memes, and 0% scratches!</string>
+    <string name="about_dialog_funny" formatted="false">Hi there, I\'m Shashank!\n\nFun fact: I don\'t actually own any cats (yet!), but I\'m an absolute fan of both cats and dogs! I built The Cat-alogue to share the joy of feline friends with everyone.\n\nCode powered by 90% caffeine, 10% pet memes, and 0% scratches!</string>
     <string name="about_github_button">Visit GitHub Repo</string>
     <string name="close">Close</string>
     <string name="empty_state_title">No Cats Found</string>
