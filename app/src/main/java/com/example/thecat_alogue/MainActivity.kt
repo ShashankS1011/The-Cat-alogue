@@ -131,13 +131,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.nav_menu, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val clearFavsItem = menu.findItem(R.id.nav_favourites)
+        val clearFavsItem = menu.findItem(R.id.action_clear_favourites)
+        clearFavsItem?.isVisible = viewModel.isFavouritesMode.value
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_clear_favourites -> {
+                showConfirmClearFavouritesDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun observeNetwork() {
@@ -211,6 +222,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 launch {
                     viewModel.toastMessageEvent.collectLatest { message ->
                         Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                launch {
+                    viewModel.isFavouritesMode.collectLatest {
+                        invalidateOptionsMenu()
                     }
                 }
             }
