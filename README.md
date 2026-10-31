@@ -20,7 +20,7 @@
 
 ---
 
-## 📱 Features
+## Features
 
 - **Endless Feline Stream**: Infinite scroll grid powered by [The Cat API](https://thecatapi.com/).
 - **Cat Fact of the Day**: Live daily trivia and cat facts powered by [Cat Facts API](https://catfact.ninja/). Tap refresh for instant fun facts!
@@ -36,7 +36,7 @@
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## Architecture & Tech Stack
 
 **The Cat-alogue** follows **Clean Architecture**, **MVVM**, and Google's recommended **Android Architecture Components**, written entirely in **100% Idiomatic Kotlin**:
 
@@ -74,7 +74,7 @@ com.example.thecat_alogue
 
 ---
 
-## 🧪 Testing
+## Testing
 
 The app includes unit tests for data models, utility functions, state logic, and Room DAO in-memory database tests:
 
@@ -88,7 +88,7 @@ The app includes unit tests for data models, utility functions, state logic, and
 
 ---
 
-## 🔒 Security & Policy Compliance
+## Security & Policy Compliance
 
 - **API Key Protection**: Secrets managed via `local.properties` and injected into `BuildConfig.CAT_API_KEY` at build time.
 - **Strict Network Security**: Enforces HTTPS (`android:usesCleartextTraffic="false"`).
@@ -97,7 +97,7 @@ The app includes unit tests for data models, utility functions, state logic, and
 
 ---
 
-## 👨‍💻 About The Developer
+## About The Developer
 
 > *"Hi there, I'm Shashank (aka TheSusHero)! Fun fact: I don't actually own any cats (yet!), but I'm an absolute fan of both cats and dogs! I built The Cat-alogue to share the joy of feline friends with everyone. Code powered by 90% caffeine, 10% pet memes, and 0% scratches!"*
 > 
@@ -105,7 +105,7 @@ The app includes unit tests for data models, utility functions, state logic, and
 
 ---
 
-## 🚀 Building & Running Locally
+## Building & Running Locally
 
 ### Prerequisites
 - **Android Studio**: Jellyfish (2023.3.1) or Ladybug (2024.2.1+)
@@ -127,8 +127,8 @@ echo "THE_CAT_API_KEY=live_pAAbxB0S79QEhi9f122NsmHhuo7PgncwMptCEPDi9yTdubmufGFTi
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for details.
 
-<p align="center">Made with ❤️ by <a href="https://github.com/ShashankS1011">Shashank (TheSusHero)</a></p>
+<p align="center">Made by <a href="https://github.com/ShashankS1011">Shashank (TheSusHero)</a></p>
