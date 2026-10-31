@@ -129,7 +129,7 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:background="@android:drawable/btn_dropdown" />
+                    android:background="@drawable/bg_spinner" />
 
                 <ImageButton
                     android:id="@+id/btnBreedInfo"
