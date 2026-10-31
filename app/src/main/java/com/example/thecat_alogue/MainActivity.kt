@@ -60,6 +60,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // --- Apply Window Insets for Edge-to-Edge ---
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout) { _, insets ->
+            val systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            binding.appBarLayout.setPadding(0, systemBars.top, 0, 0)
+            binding.recyclerView.setPadding(
+                binding.recyclerView.paddingLeft,
+                binding.recyclerView.paddingTop,
+                binding.recyclerView.paddingRight,
+                systemBars.bottom + 16
+            )
+            insets
+        }
+
         // --- Toolbar & Greeting ---
         setSupportActionBar(binding.toolbar)
         setupGreeting()
