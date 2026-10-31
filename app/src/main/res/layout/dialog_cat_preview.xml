@@ -30,12 +30,22 @@
         android:paddingTop="16dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPreviewDownload"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/download" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPreviewShare"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
             android:text="@string/share_via" />
 
         <com.google.android.material.button.MaterialButton
@@ -43,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:text="@string/nav_my_favourites" />
 
     </LinearLayout>

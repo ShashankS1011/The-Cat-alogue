@@ -33,8 +33,13 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
         void onCatClick(CatImage cat);
     }
 
+    public interface OnDownloadClickListener {
+        void onDownloadClick(CatImage cat);
+    }
+
     private final OnFavouriteClickListener favouriteClickListener;
     private final OnCatClickListener catClickListener;
+    private final OnDownloadClickListener downloadClickListener;
 
     public static final DiffUtil.ItemCallback<CatImage> DIFF_CALLBACK = new DiffUtil.ItemCallback<CatImage>() {
         @Override
@@ -49,9 +54,16 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
     };
 
     public CatAdapter(OnFavouriteClickListener favouriteClickListener, OnCatClickListener catClickListener) {
+        this(favouriteClickListener, catClickListener, null);
+    }
+
+    public CatAdapter(OnFavouriteClickListener favouriteClickListener,
+                      OnCatClickListener catClickListener,
+                      OnDownloadClickListener downloadClickListener) {
         super(DIFF_CALLBACK);
         this.favouriteClickListener = favouriteClickListener;
         this.catClickListener = catClickListener;
+        this.downloadClickListener = downloadClickListener;
     }
 
     @NonNull
@@ -94,6 +106,14 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
             }
         });
 
+        holder.binding.btnDownload.setOnClickListener(v -> {
+            if (downloadClickListener != null) {
+                downloadClickListener.onDownloadClick(cat);
+            } else {
+                CatUtils.downloadImage(context, cat.getUrl(), cat.getId());
+            }
+        });
+
         holder.binding.btnFavourite.setOnClickListener(v -> {
             holder.binding.btnFavourite.setImageResource(R.drawable.ic_favourite_filled);
             holder.binding.btnFavourite.animate()
@@ -126,3 +146,4 @@ public class CatAdapter extends ListAdapter<CatImage, CatAdapter.ViewHolder> {
         }
     }
 }
+

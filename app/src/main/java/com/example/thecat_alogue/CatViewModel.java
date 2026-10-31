@@ -22,6 +22,7 @@ public class CatViewModel extends AndroidViewModel {
 
     private String currentBreedId = null;
     private boolean isLoading = false;
+    private boolean isFavouritesMode = false;
     private List<CatImage> currentCatList = new ArrayList<>();
 
     public CatViewModel(@NonNull Application application) {
@@ -54,6 +55,14 @@ public class CatViewModel extends AndroidViewModel {
         this.currentBreedId = breedId;
     }
 
+    public boolean isFavouritesMode() {
+        return isFavouritesMode;
+    }
+
+    public void setFavouritesMode(boolean favouritesMode) {
+        this.isFavouritesMode = favouritesMode;
+    }
+
     public List<CatImage> getCurrentCatList() {
         return currentCatList;
     }
@@ -61,6 +70,7 @@ public class CatViewModel extends AndroidViewModel {
     public void loadCats(boolean isPagination) {
         if (isLoading) return;
         isLoading = true;
+        isFavouritesMode = false;
 
         if (!isPagination) {
             catsLiveData.setValue(Resource.loading());
@@ -116,6 +126,7 @@ public class CatViewModel extends AndroidViewModel {
     }
 
     public void loadFavourites() {
+        isFavouritesMode = true;
         catsLiveData.setValue(Resource.loading());
         repository.getFavourites(DEFAULT_USER_ID, new CatRepository.RepositoryCallback<List<CatImage>>() {
             @Override
@@ -129,6 +140,15 @@ public class CatViewModel extends AndroidViewModel {
                 catsLiveData.setValue(Resource.error(errorMessage));
             }
         });
+    }
+
+    public void toggleFavourite(CatImage cat) {
+        if (cat == null) return;
+        if (isFavouritesMode) {
+            removeFavourite(cat.getId());
+        } else {
+            addFavourite(cat);
+        }
     }
 
     public void addFavourite(CatImage cat) {

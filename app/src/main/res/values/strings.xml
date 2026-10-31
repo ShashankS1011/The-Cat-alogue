@@ -35,4 +35,8 @@
     <string name="splash_subtitle">Your Ultimate Feline Haven</string>
     <string name="cat_fact_title">Cat Fact of the Day</string>
     <string name="cat_fact_loading">Fetching a fun cat fact&#8230;</string>
+    <string name="download">Download</string>
+    <string name="downloading_image">Downloading image to Downloads folder&#8230;</string>
+    <string name="download_failed">Download failed: %1$s</string>
+    <string name="download_complete">Image saved to Downloads!</string>
 </resources>

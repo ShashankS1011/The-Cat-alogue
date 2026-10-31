@@ -36,4 +36,15 @@ public class CatDataModelTest {
         assertTrue(error.isError());
         assertEquals("Network Failed", error.getMessage());
     }
+
+    @Test
+    public void testCatUtilsGreetingAndShareMessage() {
+        assertEquals(R.string.good_morning, CatUtils.getTimeGreeting(8));
+        assertEquals(R.string.good_afternoon, CatUtils.getTimeGreeting(14));
+        assertEquals(R.string.good_evening, CatUtils.getTimeGreeting(18));
+        assertEquals(R.string.hello_night_owl, CatUtils.getTimeGreeting(23));
+
+        String url = "https://cdn2.thecatapi.com/images/test.gif";
+        assertEquals("Check out this cat!\nhttps://cdn2.thecatapi.com/images/test.gif", CatUtils.formatShareMessage(url));
+    }
 }

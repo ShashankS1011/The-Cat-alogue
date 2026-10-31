@@ -61,8 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // --- RecyclerView & Adapter ---
         adapter = new CatAdapter(
-                cat -> viewModel.addFavourite(cat),
-                this::showCatPreviewDialog
+                cat -> viewModel.toggleFavourite(cat),
+                this::showCatPreviewDialog,
+                cat -> CatUtils.downloadImage(this, cat.getUrl(), cat.getId())
         );
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         binding.recyclerView.setAdapter(adapter);
@@ -246,6 +247,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setNegativeButton(R.string.close, (d, which) -> d.dismiss())
                 .create();
 
+        dialogBinding.btnPreviewDownload.setOnClickListener(v -> {
+            CatUtils.downloadImage(this, cat.getUrl(), cat.getId());
+        });
+
         dialogBinding.btnPreviewShare.setOnClickListener(v -> {
             String message = getString(R.string.share_cat_message, cat.getUrl());
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -255,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         dialogBinding.btnPreviewFavorite.setOnClickListener(v -> {
-            viewModel.addFavourite(cat);
+            viewModel.toggleFavourite(cat);
             dialog.dismiss();
         });
 

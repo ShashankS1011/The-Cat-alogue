@@ -41,6 +41,17 @@
             android:padding="8dp">
 
             <ImageButton
+                android:id="@+id/btnDownload"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_download"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/download"
+                app:tint="@color/primary_gold" />
+
+            <ImageButton
                 android:id="@+id/btnShare"
                 android:layout_width="36dp"
                 android:layout_height="36dp"

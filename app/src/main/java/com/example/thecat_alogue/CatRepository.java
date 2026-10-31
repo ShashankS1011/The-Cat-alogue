@@ -113,6 +113,11 @@ public class CatRepository {
     }
 
     public void getFavourites(String userId, RepositoryCallback<List<CatImage>> callback) {
+        if (getApiKey() == null || getApiKey().trim().isEmpty()) {
+            loadFavoritesFromRoom(callback);
+            return;
+        }
+
         apiService.getFavourites(getApiKey(), userId).enqueue(new Callback<List<FavouriteResponse>>() {
             @Override
             public void onResponse(@NonNull Call<List<FavouriteResponse>> call, @NonNull Response<List<FavouriteResponse>> response) {
