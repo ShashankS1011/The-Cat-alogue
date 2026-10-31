@@ -13,7 +13,7 @@ glide = "4.16.0"
 splashscreen = "1.2.0"
 lifecycle = "2.8.7"
 mockito = "5.24.0"
-room = "2.6.1"
+room = "2.8.5"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
