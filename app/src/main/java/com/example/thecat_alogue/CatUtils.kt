@@ -2,6 +2,7 @@ package com.example.thecat_alogue
 
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
@@ -23,6 +24,20 @@ object CatUtils {
     @JvmStatic
     fun formatShareMessage(url: String): String {
         return "Check out this cat!\n$url"
+    }
+
+    @JvmStatic
+    fun shareImageWithFileProvider(context: Context, url: String?) {
+        if (url.isNullOrEmpty()) {
+            Toast.makeText(context, "Invalid cat image URL", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val message = formatShareMessage(url)
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, message)
+        }
+        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_via)))
     }
 
     @JvmStatic
@@ -67,4 +82,3 @@ object CatUtils {
         }
     }
 }
-

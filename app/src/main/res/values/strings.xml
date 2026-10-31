@@ -39,4 +39,7 @@
     <string name="downloading_image">Downloading image to Downloads folder&#8230;</string>
     <string name="download_failed">Download failed: %1$s</string>
     <string name="download_complete">Image saved to Downloads!</string>
+    <string name="clear_all_favourites">Clear All Favourites</string>
+    <string name="confirm_clear_favourites">Are you sure you want to clear all your saved favourites?</string>
+    <string name="clear">Clear</string>
 </resources>

@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.swiperefreshlayout)
     implementation(libs.splashscreen)
 
+    // Kotlin & Coroutines
+    implementation(libs.coroutines.android)
+
     // Networking
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
@@ -67,17 +70,21 @@ dependencies {
     implementation(libs.glide.core)
     annotationProcessor(libs.glide.compiler)
 
-    // Lifecycle (ViewModel & LiveData)
+    // Lifecycle (ViewModel, LiveData & Coroutine Scope)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.runtime.ktx)
 
     // Room Database
     implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     annotationProcessor(libs.room.compiler)
 
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.core.testing)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

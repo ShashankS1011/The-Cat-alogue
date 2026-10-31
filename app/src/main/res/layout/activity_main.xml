@@ -27,6 +27,19 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <TextView
+            android:id="@+id/offlineBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/crimson_red"
+            android:textColor="@color/on_crimson_red"
+            android:text="Offline Mode • Showing Cached Felines"
+            android:gravity="center"
+            android:padding="6dp"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
         <!-- Cat Fact Banner Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/catFactCard"
