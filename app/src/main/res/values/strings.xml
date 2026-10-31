@@ -42,4 +42,5 @@
     <string name="clear_all_favourites">Clear All Favourites</string>
     <string name="confirm_clear_favourites">Are you sure you want to clear all your saved favourites?</string>
     <string name="clear">Clear</string>
+    <string name="offline_banner_text">Offline Mode • Showing Cached Felines</string>
 </resources>
