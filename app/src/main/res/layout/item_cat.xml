@@ -38,39 +38,45 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:padding="8dp">
 
             <ImageButton
                 android:id="@+id/btnDownload"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
+                android:layout_marginEnd="4dp"
                 android:src="@drawable/ic_download"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/bg_action_btn_download"
                 android:scaleType="fitCenter"
+                android:padding="6dp"
                 android:contentDescription="@string/download"
                 app:tint="@color/download_teal" />
 
             <ImageButton
                 android:id="@+id/btnShare"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:src="@drawable/ic_share"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/bg_action_btn_share"
                 android:scaleType="fitCenter"
+                android:padding="6dp"
                 android:contentDescription="@string/share_via"
                 app:tint="@color/share_gold" />
 
             <ImageButton
                 android:id="@+id/btnFavourite"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="36dp"
                 android:layout_weight="1"
+                android:layout_marginStart="4dp"
                 android:src="@drawable/ic_favourite"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/bg_action_btn_favourite"
                 android:scaleType="fitCenter"
+                android:padding="6dp"
                 android:contentDescription="@string/nav_my_favourites"
                 app:tint="@color/fav_red" />
 

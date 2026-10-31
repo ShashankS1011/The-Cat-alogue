@@ -11,7 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_gravity="center"
-        android:background="?android:attr/textColorSecondary"
+        android:background="@drawable/bg_sheet_handle"
         android:layout_marginBottom="16dp" />
 
     <TextView
@@ -50,9 +50,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnWiki"
         style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_nav_about"
+        app:iconTint="@color/primary_gold"
+        app:strokeColor="@color/primary_gold"
+        android:textColor="@color/primary_gold"
         android:text="@string/btn_wiki" />
 
 </LinearLayout>

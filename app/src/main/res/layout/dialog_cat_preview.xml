@@ -35,7 +35,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="4dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_download"
+            app:iconTint="@color/download_teal"
+            app:strokeColor="@color/download_teal"
+            android:textColor="@color/download_teal"
             android:text="@string/download" />
 
         <com.google.android.material.button.MaterialButton
@@ -44,16 +49,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="3dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_share"
+            app:iconTint="@color/share_gold"
+            app:strokeColor="@color/share_gold"
+            android:textColor="@color/share_gold"
             android:text="@string/share_via" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPreviewFavorite"
+            style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="4dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_favourite"
+            app:iconTint="@color/white"
+            android:backgroundTint="@color/crimson_red"
+            android:textColor="@color/white"
             android:text="@string/nav_my_favourites" />
 
     </LinearLayout>
