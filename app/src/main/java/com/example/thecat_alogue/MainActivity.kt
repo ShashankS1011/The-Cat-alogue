@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1) && !viewModel.isBookmarksMode.value) {
                     viewModel.loadCats(isPagination = true)
                 }
             }
@@ -112,7 +112,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Pull to Refresh Listener
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadCats(isPagination = false)
+            if (viewModel.isBookmarksMode.value) {
+                viewModel.loadBookmarks()
+            } else {
+                viewModel.loadCats(isPagination = false)
+            }
         }
 
         // Retry Button Listener

@@ -29,6 +29,9 @@ class CatViewModel(application: Application) : AndroidViewModel(application) {
     private val _toastMessageEvent = MutableSharedFlow<String>()
     val toastMessageEvent: SharedFlow<String> = _toastMessageEvent.asSharedFlow()
 
+    private val _isBookmarksMode = MutableStateFlow(false)
+    val isBookmarksMode: StateFlow<Boolean> = _isBookmarksMode.asStateFlow()
+
     private val _isOffline = MutableStateFlow(false)
     val isOffline: StateFlow<Boolean> = _isOffline.asStateFlow()
 
@@ -43,6 +46,7 @@ class CatViewModel(application: Application) : AndroidViewModel(application) {
     fun loadCats(isPagination: Boolean = false) {
         if (isLoading) return
         isLoading = true
+        _isBookmarksMode.value = false
 
         if (!isPagination) {
             _catsUiState.value = Resource.loading()
@@ -90,12 +94,14 @@ class CatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun loadBookmarks() {
+        _isBookmarksMode.value = true
         _catsUiState.value = Resource.loading()
         viewModelScope.launch {
             val result = repository.getBookmarks()
             result.fold(
                 onSuccess = { bookmarks ->
-                    _catsUiState.value = Resource.success(bookmarks)
+                    currentCatList = bookmarks.toMutableList()
+                    _catsUiState.value = Resource.success(currentCatList.toList())
                 },
                 onFailure = { error ->
                     _catsUiState.value = Resource.error(error.localizedMessage ?: "Failed to load bookmarks")
