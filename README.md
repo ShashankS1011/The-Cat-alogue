@@ -17,12 +17,6 @@
   <img src="https://img.shields.io/badge/targetSdk-35-purple.svg" alt="targetSdk: 35 (Android 15)" />
 </p>
 
-<p align="center">
-  <a href="https://github.com/ShashankS1011/The-Cat-alogue/releases/latest">
-    <img src="https://img.shields.io/badge/Download_Latest_APK-v1.0.8-FFB300?style=for-the-badge&logo=android&logoColor=white&labelColor=1E1B18" alt="Download Latest Release APK" />
-  </a>
-</p>
-
 ---
 
 ## Download Latest Release
