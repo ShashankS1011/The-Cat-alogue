@@ -107,14 +107,6 @@ com.example.thecat_alogue
 
 ---
 
-## About The Developer
-
-> *"Hi there, I'm Shashank! Fun fact: I don't actually own any cats (yet!), but I'm an absolute fan of both cats and dogs! I built The Cat-alogue to share the joy of feline friends with everyone. Code powered by 90% caffeine, 10% pet memes, and 0% scratches!"*
-> 
-> — **Shashank** ([@ShashankS1011](https://github.com/ShashankS1011))
-
----
-
 ## Building & Running Locally
 
 ### Prerequisites
