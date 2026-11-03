@@ -132,7 +132,7 @@ cd The-Cat-alogue
 echo "THE_CAT_API_KEY=live_pAAbxB0S79QEhi9f122NsmHhuo7PgncwMptCEPDi9yTdubmufGFTitiXsKlrQbik" >> local.properties
 
 # 3. Build & test
-./gradlew assembleDebug testDebugUnitTest
+./gradlew assembleRelease testDebugUnitTest
 ```
 
 ---

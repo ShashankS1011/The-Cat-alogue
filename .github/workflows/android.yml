@@ -40,11 +40,11 @@ jobs:
     - name: Run Android Lint
       run: ./gradlew lintDebug
 
-    - name: Build APK
-      run: ./gradlew assembleDebug
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
 
-    - name: Upload Debug APK
+    - name: Upload Release APK
       uses: actions/upload-artifact@v7
       with:
-        name: app-debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: TheCat-alogue-Release-APK
+        path: app/build/outputs/apk/release/*.apk

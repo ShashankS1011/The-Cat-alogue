@@ -34,22 +34,18 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
-
       - name: Build Release APK
         run: ./gradlew assembleRelease
 
-      - name: Copy APKs for Upload
+      - name: Copy APK for Upload
         run: |
           mkdir -p output_apks
-          cp app/build/outputs/apk/debug/app-debug.apk output_apks/TheCat-alogue-v1.0.0-debug.apk || true
-          cp app/build/outputs/apk/release/app-release-unsigned.apk output_apks/TheCat-alogue-v1.0.0-release-unsigned.apk || true
+          cp app/build/outputs/apk/release/app-release-unsigned.apk output_apks/TheCat-alogue-${{ github.ref_name }}.apk || true
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: TheCat-alogue-APKs
+          name: TheCat-alogue-Release-APK
           path: output_apks/*
 
       - name: Create GitHub Release
@@ -60,17 +56,15 @@ jobs:
           body: |
             ## The Cat-alogue Release ${{ github.ref_name }}
             
-            ### What's New:
-            - **Modern Material 3 Theme**: Warm cat-inspired palette with Dark & Light mode support.
-            - **Android 12+ Splash Screen API**: Smooth application startup experience.
-            - **MVVM Architecture & ViewBinding**: Enhanced stability and performance.
-            - **Infinite Scrolling & Breed Search**: Explore random cats or filter by breed.
-            - **Favorites & Sharing**: Save favorite cats and share image URLs with friends.
-            - **Funny About Developer Dialog**: Learn about the caffeine-fueled developer behind the app.
+            ### Highlights:
+            - **100% Kotlin Architecture**: Coroutines, StateFlow, and Room KTX offline caching.
+            - **Material 3 Design & Dynamic Colors**: Adaptive theme palette with high contrast.
+            - **Interactive Features**: AutoComplete breed search, pinch-to-zoom image viewer, shake-to-refresh, and TTS daily cat facts.
+            - **Downloads & File Sharing**: Direct image/GIF downloads and secure FileProvider sharing.
             
             ---
             ### Downloads
-            Download the `.apk` file below and install it directly on your Android device (Android 7.0+ / API 24+).
+            Download the main release `.apk` file below and install it directly on your Android device (Android 7.0+ / API 24+).
           draft: false
           prerelease: false
           files: output_apks/*
