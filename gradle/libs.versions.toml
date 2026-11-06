@@ -17,7 +17,7 @@ mockito = "5.24.0"
 room = "2.8.5"
 coroutines = "1.10.1"
 coreTesting = "2.2.0"
-ksp = "2.1.0-1.0.29"
+ksp = "2.3.13"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
